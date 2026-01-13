@@ -1,0 +1,124 @@
+<script setup>
+const { totalPages, currentPage, pageSizeOptions, defaultPageSize } =
+  defineProps({
+    total: {
+      type: Number,
+      default: 0,
+    },
+    totalPages: {
+      type: Number,
+      default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 0,
+    },
+    pageSizeOptions: {
+      type: Object,
+      default: [10, 20, 30],
+    },
+    defaultPageSize: {
+      type: Number,
+      default: 10,
+    },
+    unit: {
+      type: String,
+      default: "",
+    },
+  });
+
+const selectedItem = ref(defaultPageSize);
+</script>
+
+<template>
+  <div class="text-secondary">
+    <div
+      class="flex flex-col sm:flex-row flex-wrap sm:items-center justify-start"
+      :class="totalPages === 0 ? 'hidden' : 'block'"
+    >
+      <div class="inline-block text-center md:text-left mr-1">
+        <span>Tổng cộng</span>
+        <span v-if="total > 0" class="mx-2">{{ total }}</span>
+        <span>{{ unit }}</span>
+      </div>
+      <div class="flex flex-wrap items-center justify-center">
+        <button
+          class="page-item"
+          @click="$emit('onChangePage', currentPage - 1)"
+          :disabled="currentPage === 1"
+        >
+          <BackItem />
+        </button>
+        <template v-for="pageNumber in totalPages" :key="pageNumber">
+          <button
+            class="page-item"
+            :class="pageNumber === currentPage ? 'page-item-current' : ''"
+            @click="$emit('onChangePage', pageNumber)"
+            :disabled="pageNumber === currentPage"
+            v-if="
+              totalPages <= 6 ||
+              pageNumber === 1 ||
+              pageNumber === totalPages ||
+              pageNumber === currentPage ||
+              pageNumber === currentPage - 1 ||
+              pageNumber === currentPage + 1 ||
+              (currentPage < 1 + 4 && pageNumber <= 1 + 4) ||
+              (currentPage > totalPages - 4 && pageNumber >= totalPages - 4)
+            "
+          >
+            {{ pageNumber }}
+          </button>
+          <button
+            class="page-item"
+            @click="$emit('onChangePage', pageNumber)"
+            v-else-if="
+              (totalPages > 6 && pageNumber === currentPage - 2) ||
+              pageNumber === currentPage + 2 ||
+              (currentPage < 1 + 4 && pageNumber === 1 + 4 + 1) ||
+              (currentPage > totalPages - 4 &&
+                pageNumber === totalPages - 4 - 1)
+            "
+          >
+            <span>...</span>
+          </button>
+        </template>
+        <button
+          class="page-item"
+          @click="$emit('onChangePage', currentPage + 1)"
+          :disabled="currentPage === totalPages"
+        >
+          <DropRightMenu />
+        </button>
+
+        <select
+          v-model="selectedItem"
+          class="py-[1px] ml-1 pl-3 pr-4 rounded-md border min-w-[112px] max-w-[112px] border-gray-200 focus:outline-none appearance-none"
+          @change="$emit('onChangePageSize', selectedItem)"
+        >
+          <option
+            v-for="item in pageSizeOptions"
+            :key="item"
+            :value="item"
+            class="text-base"
+          >
+            {{ item }} / trang
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.page-item {
+  @apply flex items-center text-[#4E4E4E] text-sm justify-center w-7 h-7 bg-[#F2F2F2] rounded-md m-1.5;
+}
+
+.page-item-current {
+  @apply text-white bg-[#39b54a];
+}
+
+.page-item:hover {
+  @apply bg-[#DBEFDE] text-[#39b54a];
+}
+</style>

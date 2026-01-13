@@ -9,5 +9,11 @@ export default defineNuxtConfig({
     "@nuxt/scripts",
     "@nuxt/ui",
     "@nuxt/hints",
+    "@pinia/nuxt",
+    "nuxt-swiper",
+    "pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/tailwindcss",
   ],
+
+  css: ["swiper/css", "swiper/css/pagination", "@/assets/main.css"],
 });
