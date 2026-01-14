@@ -12,19 +12,20 @@
   "dependencies": {
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/eslint": "1.12.1",
-    "@nuxt/hints": "1.0.0-alpha.5",
     "@nuxt/image": "2.0.0",
     "@nuxt/scripts": "0.13.2",
     "@nuxt/ui": "4.3.0",
-    "@nuxtjs/tailwindcss": "^6.14.0",
-    "@pinia/nuxt": "0.11.3",
+    "@pinia/nuxt": "^0.11.3",
     "@unhead/vue": "^2.0.3",
-    "eslint": "^9.0.0",
     "nuxt": "^4.2.2",
     "nuxt-swiper": "2.0.1",
+    "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "typescript": "^5.6.3",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.18"
   }
 }

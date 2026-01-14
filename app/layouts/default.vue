@@ -3,24 +3,24 @@
     <Header
       :categories="categories"
       :class="{ 'hidden-header': isHeaderHidden }"
-      class="fixed-header"
+      class="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg transition-all duration-300 ease-in-out w-full"
     />
     <div class="content bg-white min-h-[calc(100vh-677px)]">
       <slot />
     </div>
 
-    <div id="zalo-vr" :class="zaloVrClass">
+    <!-- <div id="zalo-vr" :class="zaloVrClass">
       <div
-        @click="showModalZalo = true"
         class="flex flex-col items-center align-center min-w-[60px] cursor-pointer play"
+        @click="showModalZalo = true"
       >
         <div class="play_child">
           <MBotZalo class="pt-1.5" />
         </div>
       </div>
       <div
-        @click="showModalTel = true"
         class="flex flex-col items-center align-center min-w-[60px] cursor-pointer mt-6 play"
+        @click="showModalTel = true"
       >
         <div class="play_child">
           <MBotCall class="p-1" />
@@ -28,29 +28,29 @@
       </div>
       <div
         v-show="showButton"
-        @click="backToTop"
         class="lg:hidden flex-col items-center align-center min-w-[60px] cursor-pointer mt-10 ml-3 lg:ml-1"
+        @click="backToTop"
       >
         <BackToTop />
       </div>
-    </div>
+    </div> -->
 
     <div
       v-show="showButton"
-      @click="backToTop"
       class="hidden z-[100] lg:flex right-8 bottom-24 fixed flex-col items-center align-center min-w-[60px] cursor-pointer"
+      @click="backToTop"
     >
       <BackToTop />
     </div>
 
     <div
       v-if="showModalZalo"
-      @click.self="handleModalZalo"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70]"
+      @click.self="handleModalZalo"
     >
       <div class="bg-white rounded-lg p-6 w-96">
         <div class="w-full flex justify-end">
-          <CloseBlack @click="handleModalZalo" class="cursor-pointer" />
+          <CloseBlack class="cursor-pointer" @click="handleModalZalo" />
         </div>
         <h3 class="text-lg font-semibold text-title text-center mb-4">
           Kết nối Zalo với chúng tôi
@@ -76,9 +76,9 @@
 
     <div
       v-if="showModalTel"
-      @click.self="handleModalTel"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] transition-opacity duration-500 opacity-0"
       :class="{ 'opacity-100': showModalTel }"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] transition-opacity duration-500 opacity-0"
+      @click.self="handleModalTel"
     >
       <div
         class="bg-white rounded-lg p-6 w-96 transform transition-all duration-300 ease-out"
@@ -88,7 +88,7 @@
         }"
       >
         <div class="w-full flex justify-end">
-          <CloseBlack @click="handleModalTel" class="cursor-pointer" />
+          <CloseBlack class="cursor-pointer" @click="handleModalTel" />
         </div>
         <h3 class="text-lg font-semibold text-title text-center mb-4">
           Gọi điện cho chúng tôi
@@ -131,14 +131,14 @@ const handleScroll = () => {
   lastScrollY = currentScrollY;
 };
 
-const { data: resData } = await restAPI.stores.getStoreProductCategories({
-  params: {
-    current: 1,
-    pageSize: 9999,
-  },
-});
+// const { data: resData } = await restAPI.stores.getStoreProductCategories({
+//   params: {
+//     current: 1,
+//     pageSize: 9999,
+//   },
+// });
 
-const categories = resData.value?.data;
+const categories = ref([]);
 
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
@@ -195,10 +195,6 @@ const zaloVrClass = computed(() => {
 </script>
 
 <style>
-.fixed-header {
-  @apply fixed top-0 left-0 right-0 z-50 bg-white shadow-lg transition-all duration-300 ease-in-out;
-}
-
 .hidden-header {
   transform: translateY(-100%);
 }

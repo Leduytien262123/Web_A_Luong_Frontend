@@ -42,11 +42,11 @@
 
       <div v-if="PC" class="flex-col w-[180px]">
         <div class="text-lg text-title py-1.5 font-medium">Sản phẩm</div>
-        <div class="py-1.5" v-for="link in filteredProducts" :key="link.id">
+        <div v-for="link in filteredProducts" :key="link.id" class="py-1.5">
           <span
             v-if="link?.visible_footer === 1"
-            @click="navigateTo(constructCategoryPath(link))"
             class="cursor-pointer"
+            @click="navigateTo(constructCategoryPath(link))"
           >
             {{ link.name }}
           </span>
@@ -55,8 +55,8 @@
 
       <div v-if="PC" class="flex-col w-[180px]">
         <div class="text-lg text-title py-1.5 font-medium">Về chúng tôi</div>
-        <div class="py-1.5" v-for="link in aboutUs" :key="link.id">
-          <span @click="navigateTo(`/${link.slug}`)" class="cursor-pointer">{{
+        <div v-for="link in aboutUs" :key="link.id" class="py-1.5">
+          <span class="cursor-pointer" @click="navigateTo(`/${link.slug}`)">{{
             link.text
           }}</span>
         </div>
@@ -65,11 +65,11 @@
       <div v-else class="flex my-10">
         <div class="w-[50%]">
           <div class="text-lg text-title py-1.5 font-medium">Sản phẩm</div>
-          <div class="py-1.5" v-for="link in filteredProducts" :key="link.id">
+          <div v-for="link in filteredProducts" :key="link.id" class="py-1.5">
             <span
               v-if="link?.visible_footer === 1"
-              @click="navigateTo(constructCategoryPath(link))"
               class="cursor-pointer"
+              @click="navigateTo(constructCategoryPath(link))"
             >
               {{ link.name }}</span
             >
@@ -78,8 +78,8 @@
 
         <div class="w-[50%]">
           <div class="text-lg text-title py-1.5 font-medium">Về chúng tôi</div>
-          <div class="py-1.5" v-for="link in aboutUs" :key="link.id">
-            <span @click="navigateTo(`/${link.slug}`)" class="cursor-pointer">{{
+          <div v-for="link in aboutUs" :key="link.id" class="py-1.5">
+            <span class="cursor-pointer" @click="navigateTo(`/${link.slug}`)">{{
               link.text
             }}</span>
           </div>
@@ -88,7 +88,7 @@
 
       <div class="w-[286px]">
         <div class="text-lg text-title py-2 font-medium">
-          Kết nối với Sim247
+          Kết nối với Luật đất đai
         </div>
         <div class="py-1 flex">
           <!-- <div
@@ -96,33 +96,11 @@
           >
             <a href="" class=""> <Twitter /></a>
           </div> -->
-          <div
-            class="mx-1.5 w-10 h-10 flex items-center justify-center rounded-xl bg-white"
-          >
-            <a
-              href="https://www.tiktok.com/@wifi24_7?is_from_webapp=1&sender_device=pc"
-              class=""
-              target="_blank"
-            >
-              <Tiktok
-            /></a>
-          </div>
           <!-- <div
             class="mx-1.5 w-10 h-10 flex items-center justify-center rounded-xl bg-white"
           >
             <CallPhone />
           </div> -->
-          <div
-            class="mx-1.5 w-10 h-10 flex items-center justify-center rounded-xl bg-white"
-          >
-            <a
-              href="https://www.instagram.com/wifi247_wifidulich_wifiquocte/"
-              class=""
-              target="_blank"
-            >
-              <Instagram
-            /></a>
-          </div>
           <div
             class="ml-1.5 w-10 h-10 flex items-center justify-center rounded-xl bg-white"
           >
@@ -135,22 +113,13 @@
             /></a>
           </div>
         </div>
-        <div class="pt-6">
-          <div class="w-[179px] h-[66px]">
-            <NuxtImg
-              src="/img/BCT.png"
-              alt="bct"
-              class="w-full h-full object-cover"
-            />
-          </div>
-        </div>
       </div>
     </div>
   </div>
   <div
     class="w-full h-[68px] bg-primary flex items-center justify-center text-white text-base"
   >
-    2024 @ 2023 Bản quyền thuộc về WIFI247
+    2026 @ Bản quyền thuộc về Duy Tiến
   </div>
 </template>
 
@@ -195,7 +164,7 @@ const aboutUs = ref([
   { id: 2, slug: "chinh-sach-doi-tra", text: "Chính sách đổi trả" },
   { id: 3, slug: "huong-dan-mua-hang", text: "Hướng dẫn mua hàng" },
   // { id: 4, slug: "", text: "FAQ" },
-  { id: 5, slug: "tin-tuc", text: "Tin tức" },
+  // { id: 5, slug: "tin-tuc", text: "Tin tức" },
 ]);
 
 const rawCategories = products;
@@ -238,7 +207,7 @@ visibleCategories.sort((c1, c2) => c1.position - c2.position);
 const validateRoutePath = () => {
   const categoryPathArr = route.path.split("/").filter(Boolean);
   const allowedPaths = [
-    "tin-tuc",
+    // "tin-tuc",
     "search",
     "sanpham",
     "dat-hang",

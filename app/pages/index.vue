@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <h1>Home</h1>
+    <div class="bg-red-500 text-white p-4">Tailwind OK chưa?</div>
   </div>
 </template>
 
