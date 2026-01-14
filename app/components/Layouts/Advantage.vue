@@ -16,8 +16,8 @@
       <button
         v-if="isVisibleNews"
         class="py-3 px-6 border border-[#39B54A] rounded-full flex items-center hover:scale-110 transition duration-300 ease-in-out mt-3 lg:mt-0"
-        @click="showModalTel = true"
         :class="{ 'animLeft reveal active': isVisibleNews }"
+        @click="showModalTel = true"
       >
         <span class="mr-2 text-primary">Liên hệ ngay</span>
         <Calling2 />
@@ -52,8 +52,8 @@
                 {{ item.title }}
               </div>
               <span
-                v-html="item.content"
                 class="text-base lg:text-center text-secondary line-clamp-3 lg:line-clamp-none"
+                v-html="sanitizedItems[index]"
               ></span>
             </div>
           </div>
@@ -63,9 +63,9 @@
 
     <div
       v-if="showModalTel"
-      @click.self="handleModalTel"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] transition-opacity duration-500 opacity-0"
       :class="{ 'opacity-100': showModalTel }"
+      @click.self="handleModalTel"
     >
       <div
         class="bg-white rounded-lg p-6 w-96 transform transition-all duration-300 ease-out"
@@ -75,7 +75,7 @@
         }"
       >
         <div class="w-full flex justify-end">
-          <CloseBlack @click="handleModalTel" class="cursor-pointer" />
+          <CloseBlack class="cursor-pointer" @click="handleModalTel" />
         </div>
         <h3 class="text-lg font-semibold text-title text-center mb-4">
           Gọi điện cho chúng tôi
@@ -132,6 +132,54 @@ const items = ref([
     content: `Đội ngũ nhân viên hỗ trợ online 24/7 trong suốt quá trình của bạn.`,
   },
 ]);
+
+const sanitizedItems = ref(items.value.map(() => ""));
+let _dompurify = null;
+
+onMounted(async () => {
+  try {
+    _dompurify = (await import("dompurify")).default;
+    sanitizedItems.value = items.value.map((i) =>
+      _dompurify.sanitize(i.content)
+    );
+  } catch (e) {
+    sanitizedItems.value = items.value.map(() => "");
+  }
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          isVisibleNews.value = true;
+          items.value.forEach((_, index) => {
+            setTimeout(() => {
+              isVisibleItems.value[index] = true;
+            }, index * 250);
+          });
+          observer.disconnect();
+        }, 500);
+      }
+    },
+    { threshold: 0.1 }
+  );
+  if (sectionRef.value) {
+    observer.observe(sectionRef.value);
+  }
+});
+
+watch(
+  items,
+  (newItems) => {
+    if (_dompurify) {
+      sanitizedItems.value = newItems.map((i) =>
+        _dompurify.sanitize(i.content)
+      );
+    } else {
+      sanitizedItems.value = newItems.map(() => "");
+    }
+  },
+  { deep: true }
+);
 
 const showModalTel = ref(false);
 

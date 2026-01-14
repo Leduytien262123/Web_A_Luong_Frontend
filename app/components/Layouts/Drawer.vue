@@ -13,14 +13,14 @@
 </template>
 
 <script setup>
-const show = defineModel("show");
+const show = defineModel("show", { type: Boolean });
 const props = defineProps({
   placement: {
     type: String,
     default: "",
   },
   classList: {
-    type: String,
+    type: [String, Array],
     default: "",
   },
 });
@@ -40,7 +40,10 @@ const drawerClass = computed(() => {
       : show.value
       ? " right-0"
       : " -right-full";
-  classes += " " + props.classList;
+  const extra = Array.isArray(props.classList)
+    ? props.classList.join(" ")
+    : props.classList || "";
+  if (extra) classes += " " + extra;
   return classes;
 });
 

@@ -1,0 +1,9 @@
+{
+  // Disable Tailwind/Windi/Windsurf validations that suggest canonical classes
+  "tailwindCSS.validate": false,
+
+  // Disable built-in CSS/SCSS/LESS validation in workspace (leave compiler checks to your build)
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false
+}

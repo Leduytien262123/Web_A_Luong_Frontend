@@ -1,12 +1,5 @@
 <script setup>
-const { restAPI } = useApi();
-
-const props = defineProps({
-  categories: {
-    type: Array,
-    default: [],
-  },
-});
+// const { restAPI } = useApi();
 
 const searchQuery = ref(null);
 const searchResults = ref([]);
@@ -32,14 +25,6 @@ const handleSearch = () => {
   });
 
   return filteredResults;
-};
-
-const onInput = () => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    const filteredResults = handleSearch();
-    searchResults.value = filteredResults;
-  });
 };
 
 const onInputMb = () => {
@@ -70,117 +55,17 @@ onBeforeUnmount(() => {
 });
 
 const route = useRoute();
-const router = useRouter();
 const showDrawer = ref(false);
 const showBaseSearch = ref(false);
 
 const routeSlug = route.path.split("/").pop();
 
-const isObjectNullOrEmpty = (value) =>
-  value === null || value === undefined || value === "";
-
-const rawCategories = [...props.categories];
-
-const categoriesMap = rawCategories.reduce((acc, item) => {
-  acc[item.id] = { ...item, options: [] };
-  return acc;
-}, {});
-
-Object.values(categoriesMap).forEach((category) => {
-  if (
-    !isObjectNullOrEmpty(category.parent_id) &&
-    categoriesMap[category.parent_id]
-  ) {
-    categoriesMap[category.parent_id].options.push(category);
-  }
-});
-
-let visibleCategories = Object.values(categoriesMap).filter(
-  (category) =>
-    isObjectNullOrEmpty(category.parent_id) && category.visible_nav === 1
-);
-
-visibleCategories.forEach((category) => {
-  category.options = category.options.filter(
-    (child) => child.visible_nav === 1
-  );
-  category.options.forEach((child) => {
-    child.options = Object.values(categoriesMap).filter(
-      (subCategory) =>
-        subCategory.parent_id === child.id && subCategory.visible_nav === 1
-    );
-    child.options.sort((c1, c2) => c1.position - c2.position);
-  });
-  category.options.sort((c1, c2) => c1.position - c2.position);
-});
-
-visibleCategories.sort((c1, c2) => c1.position - c2.position);
-
-const onCloseSearch = () => {
-  showBaseSearch.value = false;
-  searchQuery.value = null;
-  searchResults.value = [];
-};
-
-watch(
-  () => showBaseSearch.value,
-  (newValue) => {
-    if (newValue === false) {
-      searchQuery.value = null;
-      searchResults.value = [];
-    }
-  }
-);
-
-const validateRoutePath = () => {
-  const categoryPathArr = route.path.split("/").filter(Boolean);
-  const allowedPaths = [
-    // "tin-tuc",
-    "search",
-    "sanpham",
-    "dat-hang",
-    "chinh-sach-thanh-toan",
-    "chinh-sach-doi-tra",
-    "huong-dan-mua-hang",
-    "kiem-tra-thiet-bi",
-  ];
-  if (allowedPaths.includes(categoryPathArr[0])) {
-    return;
-  }
-  let currentCategories = visibleCategories;
-  for (let i = 0; i < categoryPathArr.length; i++) {
-    const category = currentCategories.find(
-      (cat) => cat.slug === categoryPathArr[i]
-    );
-    if (!category) {
-      navigateTo("/");
-      return;
-    }
-    currentCategories = category.options;
-  }
-};
-
-validateRoutePath();
-// ---------------------------------------------------------------------------------------------------------------------
-const toggleSearch = () => {
-  callApiSearch();
-  if (route.path === "/") {
-    const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-    if (scrollPosition >= 500) {
-      showBaseSearch.value = !showBaseSearch.value;
-    } else {
-      window.scrollTo({ top: 500, behavior: "smooth" });
-    }
-  } else {
-    showBaseSearch.value = true;
-  }
-};
-
 const selectedOption = ref(-1);
 const selectedOptionChild = ref(-1);
-const isExpanded = ref(Array(visibleCategories.length).fill(false));
+const visibleCategories = ref([]);
+const isExpanded = ref(Array(visibleCategories.value.length).fill(false));
 const isChildExpanded = ref(
-  visibleCategories.map((category) => category.options.map(() => false))
+  visibleCategories.value.map((category) => category.options.map(() => false))
 );
 
 const toggleCollapse = (index) => {
@@ -205,10 +90,6 @@ const menuItems = ref([
   // { name: "Tin tức", slug: "tin-tuc" },
   // { name: "Dịch vụ khác", slug: "https://wifi247.vn/" },
 ]);
-
-const formatPrice = (price) => {
-  return price ? new Intl.NumberFormat("vi-VN").format(price) + "đ" : "";
-};
 
 watch(route, () => {
   showDrawer.value = false;
@@ -418,7 +299,11 @@ function handleClick(menuSlug, optionSlug, childSlug) {
       </div>
     </div>
 
-    <Drawer v-model:show="showDrawer" placement="left" class="'w-75% px-18px'">
+    <Drawer
+      v-model:show="showDrawer"
+      placement="left"
+      :class-list="['w-[75%]', 'px-[18px]']"
+    >
       <div class="px-4 mb-[350px]">
         <div class="w-full flex items-center py-2 mb-2 mt-2">
           <input

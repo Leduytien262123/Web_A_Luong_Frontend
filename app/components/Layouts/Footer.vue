@@ -124,22 +124,21 @@
 </template>
 
 <script setup>
-const route = useRoute();
-
+const aboutUs = ref([]);
 const width = ref(0);
 const updateWidth = () => {
-  if (process.client) {
+  if (import.meta.client) {
     width.value = window.innerWidth;
   }
 };
 onMounted(() => {
-  if (process.client) {
+  if (import.meta.client) {
     width.value = window.innerWidth;
     window.addEventListener("resize", updateWidth);
   }
 });
 onUnmounted(() => {
-  if (process.client) {
+  if (import.meta.client) {
     window.removeEventListener("resize", updateWidth);
   }
 });
@@ -149,7 +148,7 @@ const PC = computed(() => width.value >= 1024);
 const props = defineProps({
   categories: {
     type: Array,
-    default: [],
+    default: () => [],
   },
 });
 
@@ -158,105 +157,4 @@ const products = props.categories;
 const filteredProducts = computed(() =>
   products.filter((item) => item.visible_footer === 1)
 );
-
-const aboutUs = ref([
-  { id: 1, slug: "chinh-sach-thanh-toan", text: "Chính sách thanh toán" },
-  { id: 2, slug: "chinh-sach-doi-tra", text: "Chính sách đổi trả" },
-  { id: 3, slug: "huong-dan-mua-hang", text: "Hướng dẫn mua hàng" },
-  // { id: 4, slug: "", text: "FAQ" },
-  // { id: 5, slug: "tin-tuc", text: "Tin tức" },
-]);
-
-const rawCategories = products;
-
-const categoriesMap = rawCategories.reduce((acc, item) => {
-  acc[item.id] = { ...item, options: [] };
-  return acc;
-}, {});
-
-Object.values(categoriesMap).forEach((category) => {
-  if (
-    !isObjectNullOrEmpty(category.parent_id) &&
-    categoriesMap[category.parent_id]
-  ) {
-    categoriesMap[category.parent_id].options.push(category);
-  }
-});
-
-let visibleCategories = Object.values(categoriesMap).filter(
-  (category) =>
-    isObjectNullOrEmpty(category.parent_id) && category.visible_nav === 1
-);
-
-visibleCategories.forEach((category) => {
-  category.options = category.options.filter(
-    (child) => child.visible_nav === 1
-  );
-  category.options.forEach((child) => {
-    child.options = Object.values(categoriesMap).filter(
-      (subCategory) =>
-        subCategory.parent_id === child.id && subCategory.visible_nav === 1
-    );
-    child.options.sort((c1, c2) => c1.position - c2.position);
-  });
-  category.options.sort((c1, c2) => c1.position - c2.position);
-});
-
-visibleCategories.sort((c1, c2) => c1.position - c2.position);
-
-const validateRoutePath = () => {
-  const categoryPathArr = route.path.split("/").filter(Boolean);
-  const allowedPaths = [
-    // "tin-tuc",
-    "search",
-    "sanpham",
-    "dat-hang",
-    "chinh-sach-thanh-toan",
-    "chinh-sach-doi-tra",
-    "huong-dan-mua-hang",
-    "kiem-tra-thiet-bi",
-  ];
-  if (allowedPaths.includes(categoryPathArr[0])) {
-    return;
-  }
-  let currentCategories = visibleCategories;
-  for (let i = 0; i < categoryPathArr.length; i++) {
-    const category = currentCategories.find(
-      (cat) => cat.slug === categoryPathArr[i]
-    );
-    if (!category) {
-      navigateTo("/");
-      return;
-    }
-    currentCategories = category.options;
-  }
-};
-
-validateRoutePath();
-
-const constructCategoryPath = (category) => {
-  let path = `/${category.slug}`;
-
-  const findParent = (categoryId, categories) => {
-    for (const cat of categories) {
-      if (cat.options?.some((option) => option.id === categoryId)) {
-        return cat;
-      }
-      if (cat.options) {
-        const nestedParent = findParent(categoryId, cat.options);
-        if (nestedParent) return nestedParent;
-      }
-    }
-    return null;
-  };
-
-  let parent = findParent(category.id, visibleCategories);
-
-  while (parent) {
-    path = `/${parent.slug}${path}`;
-    parent = findParent(parent.id, visibleCategories);
-  }
-
-  return path;
-};
 </script>

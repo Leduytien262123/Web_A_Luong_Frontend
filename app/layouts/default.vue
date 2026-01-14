@@ -9,31 +9,39 @@
       <slot />
     </div>
 
-    <!-- <div id="zalo-vr" :class="zaloVrClass">
-      <div
+    <div id="zalo-vr" :class="zaloVrClass">
+      <a
+        href="https://zalo.me/0903210101"
         class="flex flex-col items-center align-center min-w-[60px] cursor-pointer play"
-        @click="showModalZalo = true"
+        target="_blank"
       >
         <div class="play_child">
-          <MBotZalo class="pt-1.5" />
+          <div class="flex flex-col items-center align-center min-w-[60px]">
+            <MBotZalo class="pt-1.5" />
+          </div>
         </div>
-      </div>
-      <div
+      </a>
+
+      <a
+        href="tel:0903210101"
         class="flex flex-col items-center align-center min-w-[60px] cursor-pointer mt-6 play"
-        @click="showModalTel = true"
+        target="_blank"
       >
         <div class="play_child">
-          <MBotCall class="p-1" />
+          <div class="flex flex-col items-center align-center min-w-[60px]">
+            <MBotCall class="p-1" />
+          </div>
         </div>
-      </div>
-      <div
-        v-show="showButton"
-        class="lg:hidden flex-col items-center align-center min-w-[60px] cursor-pointer mt-10 ml-3 lg:ml-1"
-        @click="backToTop"
-      >
-        <BackToTop />
-      </div>
-    </div> -->
+      </a>
+    </div>
+
+    <div
+      v-show="showButton"
+      class="lg:hidden flex-col items-center align-center min-w-[60px] cursor-pointer mt-10 ml-3 lg:ml-1"
+      @click="backToTop"
+    >
+      <BackToTop />
+    </div>
 
     <div
       v-show="showButton"
@@ -42,76 +50,6 @@
     >
       <BackToTop />
     </div>
-
-    <div
-      v-if="showModalZalo"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70]"
-      @click.self="handleModalZalo"
-    >
-      <div class="bg-white rounded-lg p-6 w-96">
-        <div class="w-full flex justify-end">
-          <CloseBlack class="cursor-pointer" @click="handleModalZalo" />
-        </div>
-        <h3 class="text-lg font-semibold text-title text-center mb-4">
-          Kết nối Zalo với chúng tôi
-        </h3>
-        <div class="flex flex-col space-y-4">
-          <a href="https://zalo.me/0903210101" class="w-full" target="_blank">
-            <button class="bg-primary text-white py-2 px-4 rounded w-full">
-              <div class="flex flex-col items-center align-center min-w-[60px]">
-                Hà Nội
-              </div>
-            </button>
-          </a>
-          <a href="https://zalo.me/0914261999" target="_blank">
-            <button class="bg-primary text-white py-2 px-4 rounded w-full">
-              <div class="flex flex-col items-center align-center min-w-[60px]">
-                Hồ Chí Minh
-              </div>
-            </button>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div
-      v-if="showModalTel"
-      :class="{ 'opacity-100': showModalTel }"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] transition-opacity duration-500 opacity-0"
-      @click.self="handleModalTel"
-    >
-      <div
-        class="bg-white rounded-lg p-6 w-96 transform transition-all duration-300 ease-out"
-        :class="{
-          'translate-y-4 opacity-0': !showModalTel,
-          'translate-y-0 opacity-100': showModalTel,
-        }"
-      >
-        <div class="w-full flex justify-end">
-          <CloseBlack class="cursor-pointer" @click="handleModalTel" />
-        </div>
-        <h3 class="text-lg font-semibold text-title text-center mb-4">
-          Gọi điện cho chúng tôi
-        </h3>
-        <div class="flex flex-col space-y-4">
-          <a href="tel:0903210101">
-            <button class="bg-primary text-white py-2 px-4 rounded w-full">
-              <div class="flex flex-col items-center align-center min-w-[60px]">
-                Hà Nội
-              </div>
-            </button>
-          </a>
-          <a href="tel:0914261999">
-            <button class="bg-primary text-white py-2 px-4 rounded w-full">
-              <div class="flex flex-col items-center align-center min-w-[60px]">
-                Hồ Chí Minh
-              </div>
-            </button>
-          </a>
-        </div>
-      </div>
-    </div>
-
     <Footer :categories="categories" />
   </div>
 </template>
@@ -147,17 +85,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
-
-const showModalZalo = ref(false);
-const showModalTel = ref(false);
-
-const handleModalTel = () => {
-  showModalTel.value = !showModalTel.value;
-};
-
-const handleModalZalo = () => {
-  showModalZalo.value = !showModalZalo.value;
-};
 
 const showButton = ref(false);
 
