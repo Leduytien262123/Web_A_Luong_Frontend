@@ -11,7 +11,7 @@
 
     <div id="zalo-vr" :class="zaloVrClass">
       <a
-        href="https://zalo.me/0903210101"
+        href="https://zalo.me/0961646868"
         class="flex flex-col items-center align-center min-w-[60px] cursor-pointer play"
         target="_blank"
       >
@@ -23,7 +23,7 @@
       </a>
 
       <a
-        href="tel:0903210101"
+        href="tel:0961646868"
         class="flex flex-col items-center align-center min-w-[60px] cursor-pointer mt-6 play"
         target="_blank"
       >
@@ -129,11 +129,12 @@ const zaloVrClass = computed(() => {
 .content {
   margin-top: 130px;
 }
+
 .play {
   -webkit-animation: zoom 1.4s infinite;
   animation: zoom 1.4s infinite;
-  box-shadow: 0 0 0 0 rgba(57, 181, 74, 0.6);
-  background-color: rgba(57, 181, 74, 0.5);
+  box-shadow: 0 0 0 0 rgba(182, 130, 88, 0.6);
+  background-color: rgba(182, 130, 88, 0.5);
   border-radius: 50%;
   border: 5px solid transparent;
   transition: all 0.5s;
@@ -144,12 +145,12 @@ const zaloVrClass = computed(() => {
   animation: phone-vr-circle-fill 1.4s infinite ease-in-out;
   border-radius: 50%;
   display: flex;
-  background-color: rgba(57, 181, 74, 0.6);
+  background-color: rgba(182, 130, 88, 0.6);
 }
 
 #zalo-vr .phone-vr-circle-fill {
-  box-shadow: 0 0 0 0 rgba(57, 181, 74, 0.6);
-  background-color: rgba(57, 181, 74, 0.5);
+  box-shadow: 0 0 0 0 rgba(182, 130, 88, 0.6);
+  background-color: rgba(182, 130, 88, 0.5);
 }
 
 @keyframes zoom {

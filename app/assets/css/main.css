@@ -190,7 +190,7 @@ p.MsoNormal {
 }
 
 .bg-primary {
-  background: linear-gradient(to right, #39b54a, #39b54a);
+  background: linear-gradient(to right, #b68258, #b68258);
 }
 
 .content-html figure {
@@ -202,7 +202,7 @@ p.MsoNormal {
 }
 
 .text-primary {
-  color: #39b54a;
+  color: #b68258;
 }
 
 .text-secondary {
@@ -214,22 +214,22 @@ p.MsoNormal {
 }
 
 a.medium {
-  color: #39b54a;
+  color: #b68258;
   font-weight: 500;
 }
 
 a.base {
-  color: #39b54a;
+  color: #b68258;
   font-weight: 400;
 }
 
 a.bold {
-  color: #39b54a;
+  color: #b68258;
   font-weight: 700;
 }
 
 a.underline {
-  color: #39b54a;
+  color: #b68258;
   font-weight: 500;
 }
 

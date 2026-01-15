@@ -117,10 +117,16 @@ function handleClick(menuSlug, optionSlug, childSlug) {
     <div class="relative">
       <div class="sticky top-0 z-[45] w-full">
         <div class="w-full lg:w-auto gap-4 bg-primary text-center z-60">
-          <h1 v-if="['/'].includes(route.path)" class="text-white text-base">
-            Hello
+          <h1
+            v-if="['/'].includes(route.path)"
+            class="text-white py-3"
+            style="font-size: 18px !important; font-weight: 400"
+          >
+            Quản Trị Rủi Ro Dự Án Đầu Tư Xây Dựng
           </h1>
-          <p v-else class="text-white text-base">Hello</p>
+          <p v-else class="text-white text-base">
+            Quản Trị Rủi Ro Dự Án Đầu Tư Xây Dựng
+          </p>
         </div>
         <div
           class="flex w-full items-center justify-between bg-white py-5 width-base lg:py-4 space-x-0"
@@ -132,7 +138,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
           >
             <MenuMobile />
           </div>
-          <div class="w-[125px] h-10 gap-2">
+          <div class="w-[155px] h-14 gap-2">
             <NuxtLink to="/">
               <NuxtImg
                 src="/img/logo.png"
@@ -143,11 +149,11 @@ function handleClick(menuSlug, optionSlug, childSlug) {
           </div>
 
           <div class="hidden lg:flex items-center justify-center text-sm">
-            <div class="py-4 flex text-sm">
+            <div class="py-4 flex text-base">
               <NuxtLink to="/" class="text-secondary mr-2">
                 <span
                   :class="{ 'text-primary': route.path === '/' }"
-                  class="hover:text-[#39B54A]"
+                  class="hover:text-[#b68258]"
                   >Trang chủ</span
                 >
               </NuxtLink>
@@ -159,7 +165,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                 <div class="xl:mx-2 lg:mx-2">
                   <NuxtLink :to="`/${menuItem.slug}`" class="relative block">
                     <div
-                      class="flex items-center justify-center text-sm hover:text-[#39B54A]"
+                      class="flex items-center justify-center text-sm hover:text-[#b68258]"
                     >
                       <div
                         :class="{
@@ -197,7 +203,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                         @click="navigateTo(`/${menuItem.slug}/${option.slug}`)"
                       >
                         <div
-                          class="text-secondary p-2 pr-8 w-full hover:text-[#39B54A]"
+                          class="text-secondary p-2 pr-8 w-full hover:text-[#b68258]"
                         >
                           {{ option.name }}
                         </div>
@@ -221,7 +227,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                             class="p-1 w-full"
                           >
                             <div
-                              class="p-2 text-base text-secondary hover:bg-[#DBEFDE] hover:text-[#39B54A] whitespace-nowrap rounded-xl pr-8 cursor-pointer"
+                              class="p-2 text-base text-secondary hover:bg-[#DBEFDE] hover:text-[#b68258] whitespace-nowrap rounded-xl pr-8 cursor-pointer"
                               @click="
                                 navigateTo(
                                   `/${menuItem?.slug}/${option?.slug}/${child?.slug}`
@@ -246,7 +252,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                             class="p-1 w-full"
                           >
                             <div
-                              class="p-2 text-base text-secondary hover:bg-[#DBEFDE] hover:text-[#39B54A] whitespace-nowrap rounded-xl pr-8 cursor-pointer"
+                              class="p-2 text-base text-secondary hover:bg-[#DBEFDE] hover:text-[#b68258] whitespace-nowrap rounded-xl pr-8 cursor-pointer"
                               @click="
                                 navigateTo(
                                   `/${menuItem?.slug}/${option?.slug}/${child?.slug}`
@@ -269,7 +275,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
               class="flex items-center justify-center"
             >
               <div
-                class="mx-2 text-secondary hover:text-[#39B54A] cursor-pointer"
+                class="mx-2 text-secondary hover:text-[#b68258] cursor-pointer"
                 :class="{
                   'text-primary': routeSlug === `${item.slug}`,
                 }"
@@ -277,14 +283,6 @@ function handleClick(menuSlug, optionSlug, childSlug) {
               >
                 {{ item.name }}
               </div>
-            </div>
-
-            <div
-              class="mx-2 text-secondary hover:text-[#39B54A] cursor-pointer"
-            >
-              <a href="https://wifi247.vn" class="" target="_blank">
-                Dịch vụ khác</a
-              >
             </div>
 
             <div class="flex items-center justify-between">
@@ -310,7 +308,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
             v-model="searchQuery"
             type="text"
             placeholder="Tìm kiếm sản phẩm..."
-            class="py-[18px] pl-4 pr-1 w-full h-[36px] text-secondary text-base border border-[#39b54a] focus:outline-none rounded-xl"
+            class="py-[18px] pl-4 pr-1 w-full h-[36px] text-secondary text-base border border-[#b68258] focus:outline-none rounded-xl"
             @input="onInputMb"
           />
           <button
@@ -502,7 +500,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
           <Divider class="my-[13px]" />
         </div>
 
-        <div class="text-secondary hover:text-[#39B54A] cursor-pointer">
+        <div class="text-secondary hover:text-[#b68258] cursor-pointer">
           <a href="https://wifi247.vn" class="" target="_blank">
             Dịch vụ khác</a
           >
