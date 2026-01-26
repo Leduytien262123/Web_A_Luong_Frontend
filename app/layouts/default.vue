@@ -3,9 +3,9 @@
     <Header
       :categories="categories"
       :class="{ 'hidden-header': isHeaderHidden }"
-      class="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg transition-all duration-300 ease-in-out w-full"
+      class="fixed top-0 left-0 right-0 z-50 shadow-lg transition-all duration-300 ease-in-out w-full"
     />
-    <div class="content bg-white min-h-[calc(100vh-677px)]">
+    <div class="content min-h-[calc(100vh-677px)]">
       <slot />
     </div>
 
@@ -33,14 +33,14 @@
           </div>
         </div>
       </a>
-    </div>
 
-    <div
-      v-show="showButton"
-      class="lg:hidden flex-col items-center align-center min-w-[60px] cursor-pointer mt-10 ml-3 lg:ml-1"
-      @click="backToTop"
-    >
-      <BackToTop />
+      <div
+        v-show="showButton"
+        class="lg:hidden flex-col items-center align-center min-w-[60px] cursor-pointer mt-10 ml-3 lg:ml-1"
+        @click="backToTop"
+      >
+        <BackToTop />
+      </div>
     </div>
 
     <div
@@ -69,14 +69,14 @@ const handleScroll = () => {
   lastScrollY = currentScrollY;
 };
 
-// const { data: resData } = await restAPI.stores.getStoreProductCategories({
-//   params: {
-//     current: 1,
-//     pageSize: 9999,
-//   },
-// });
+const { data: resData } = await restAPI.articles.getArticleCategories({
+  params: {
+    page: 1,
+    pageSize: 9999,
+  },
+});
 
-const categories = ref([]);
+const categories = resData?.value?.data?.categories ?? [];
 
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);

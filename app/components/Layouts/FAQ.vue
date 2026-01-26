@@ -30,7 +30,7 @@ onMounted(() => {
         }, 1000);
       }
     },
-    { threshold: 0 }
+    { threshold: 0 },
   );
   if (sectionRef.value) {
     observer.observe(sectionRef.value);
@@ -64,8 +64,8 @@ onMounted(() => {
               Xem thêm FAQ
             </button>
             <button
-              @click="showModalTel = true"
               class="py-3 px-6 border border-[#39B54A] rounded-full flex items-center hover:scale-105 transition duration-300 ease-in-out"
+              @click="showModalTel = true"
             >
               <span class="mr-2 text-primary">Liên hệ ngay</span>
               <Calling2 />
@@ -84,7 +84,7 @@ onMounted(() => {
             class="py-3 px-6 rounded-tl-xl rounded-tr-xl transition duration-300"
             :class="
               activeTab === 'FAQ'
-                ? 'bg-white text-primary border'
+                ? '  text-primary border'
                 : 'bg-primary text-white'
             "
             @click="switchTab('FAQ')"
@@ -95,7 +95,7 @@ onMounted(() => {
             class="py-3 px-6 rounded-tl-xl rounded-tr-xl transition duration-300"
             :class="
               activeTab === 'Policy'
-                ? 'bg-white text-primary border'
+                ? '  text-primary border'
                 : 'bg-primary text-white'
             "
             @click="switchTab('Policy')"
@@ -107,7 +107,7 @@ onMounted(() => {
         <div
           v-if="isVisible"
           :class="{ 'animTop reveal active': isVisible }"
-          class="lg:p-[30px] p-4 bg-white rounded-lg"
+          class="lg:p-[30px] p-4 rounded-lg"
         >
           <div v-if="activeTab === 'FAQ'" class="space-y-5">
             <div
@@ -121,15 +121,15 @@ onMounted(() => {
                 </div>
               </div>
               <div
-                v-html="item?.answer"
                 class="description_html text-secondary"
+                v-html="item?.answer"
               ></div>
             </div>
           </div>
           <div
             v-if="activeTab === 'Policy'"
-            v-html="policyContent"
             class="text-secondary"
+            v-html="policyContent"
           ></div>
         </div>
       </div>
@@ -137,19 +137,19 @@ onMounted(() => {
 
     <div
       v-if="showModalTel"
-      @click.self="handleModalTel"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] transition-opacity duration-500 opacity-0"
       :class="{ 'opacity-100': showModalTel }"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] transition-opacity duration-500 opacity-0"
+      @click.self="handleModalTel"
     >
       <div
-        class="bg-white rounded-lg p-6 w-96 transform transition-all duration-300 ease-out"
+        class="rounded-lg p-6 w-96 transform transition-all duration-300 ease-out"
         :class="{
           'translate-y-4 opacity-0': !showModalTel,
           'translate-y-0 opacity-100': showModalTel,
         }"
       >
         <div class="w-full flex justify-end">
-          <CloseBlack @click="handleModalTel" class="cursor-pointer" />
+          <CloseBlack class="cursor-pointer" @click="handleModalTel" />
         </div>
         <h3 class="text-lg font-semibold text-title text-center mb-4">
           Gọi điện cho chúng tôi

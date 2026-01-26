@@ -1,5 +1,10 @@
 <script setup>
-// const { restAPI } = useApi();
+const props = defineProps({
+  categories: {
+    type: Array,
+    required: true,
+  },
+});
 
 const searchQuery = ref(null);
 const searchResults = ref([]);
@@ -58,38 +63,57 @@ const route = useRoute();
 const showDrawer = ref(false);
 const showBaseSearch = ref(false);
 
-const routeSlug = route.path.split("/").pop();
+const router = useRouter();
 
-const selectedOption = ref(-1);
-const selectedOptionChild = ref(-1);
-const visibleCategories = ref([]);
-const isExpanded = ref(Array(visibleCategories.value.length).fill(false));
-const isChildExpanded = ref(
-  visibleCategories.value.map((category) => category.options.map(() => false))
-);
-
-const toggleCollapse = (index) => {
-  isExpanded.value[index] = !isExpanded.value[index];
-  if (selectedOption.value === index) {
-    selectedOption.value = -1;
-  } else {
-    selectedOption.value = index;
-  }
+const navigateTo = (path) => {
+  if (!path) return;
+  showDrawer.value = false;
+  router.push(path);
 };
 
-const toggleChildCollapse = (index) => {
-  isChildExpanded.value[index] = !isChildExpanded.value[index];
-  if (selectedOptionChild.value === index) {
-    selectedOptionChild.value = -1;
-  } else {
-    selectedOptionChild.value = index;
-  }
-};
+const visibleCategories = computed(() => {
+  if (!props?.categories) return [];
 
-const menuItems = ref([
-  // { name: "Tin tức", slug: "tin-tuc" },
-  // { name: "Dịch vụ khác", slug: "https://wifi247.vn/" },
-]);
+  const filterAndSort = (items) => {
+    const list = Array.isArray(items) ? items.slice() : [];
+    return list
+      .filter((item) => item && item.show_menu === true)
+      .map((item) => ({
+        ...item,
+        children: filterAndSort(item.children),
+      }))
+      .sort((a, b) => {
+        const pa = a?.position_menu ?? a?.display_order ?? 0;
+        const pb = b?.position_menu ?? b?.display_order ?? 0;
+        if (pa !== pb) return pa - pb;
+        return (a?.name || "").localeCompare(b?.name || "");
+      });
+  };
+
+  return filterAndSort(props.categories);
+});
+
+const navigationItems = computed(() => {
+  const transform = (items) => {
+    return items.map((item) => {
+      const currentPath = `/${item?.slug}`;
+      const menu = {
+        label: item.name,
+        to: currentPath,
+      };
+
+      if (item.children && item.children.length > 0) {
+        menu.children = transform(item.children, currentPath);
+      }
+
+      return menu;
+    });
+  };
+
+  const items = transform(visibleCategories.value || []);
+  items.unshift({ label: "Trang chủ", to: "/" });
+  return items;
+});
 
 watch(route, () => {
   showDrawer.value = false;
@@ -105,15 +129,10 @@ watch(showBaseSearch, async (newVal) => {
 const toggleMenu = () => {
   showDrawer.value = !showDrawer.value;
 };
-
-function handleClick(menuSlug, optionSlug, childSlug) {
-  toggleMenu();
-  navigateTo(`/${menuSlug}/${optionSlug}/${childSlug}`);
-}
 </script>
 
 <template>
-  <div class="">
+  <div class="bg-white">
     <div class="relative">
       <div class="sticky top-0 z-[45] w-full">
         <div class="w-full lg:w-auto gap-4 bg-primary text-center z-60">
@@ -124,12 +143,12 @@ function handleClick(menuSlug, optionSlug, childSlug) {
           >
             Quản Trị Rủi Ro Dự Án Đầu Tư Xây Dựng
           </h1>
-          <p v-else class="text-white text-base">
+          <p v-else class="text-white text-base py-3">
             Quản Trị Rủi Ro Dự Án Đầu Tư Xây Dựng
           </p>
         </div>
         <div
-          class="flex w-full items-center justify-between bg-white py-5 width-base lg:py-4 space-x-0"
+          class="flex w-full items-center justify-between py-5 width-base lg:py-4 space-x-0"
         >
           <div
             v-if="!showDrawer"
@@ -148,7 +167,9 @@ function handleClick(menuSlug, optionSlug, childSlug) {
             </NuxtLink>
           </div>
 
-          <div class="hidden lg:flex items-center justify-center text-sm">
+          <div class=""></div>
+
+          <!-- <div class="hidden lg:flex items-center justify-center text-base">
             <div class="py-4 flex text-base">
               <NuxtLink to="/" class="text-secondary mr-2">
                 <span
@@ -165,7 +186,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                 <div class="xl:mx-2 lg:mx-2">
                   <NuxtLink :to="`/${menuItem.slug}`" class="relative block">
                     <div
-                      class="flex items-center justify-center text-sm hover:text-[#b68258]"
+                      class="flex items-center justify-center text-base hover:text-[#b68258]"
                     >
                       <div
                         :class="{
@@ -177,7 +198,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                       </div>
                       <div
                         v-if="
-                          menuItem?.options && menuItem?.options?.length > 0
+                          menuItem?.children && menuItem?.children?.length > 0
                         "
                         class=""
                       >
@@ -190,16 +211,16 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                   </NuxtLink>
                 </div>
                 <div
-                  v-if="menuItem?.options"
+                  v-if="menuItem?.children"
                   id="dropdownMenu"
-                  class="hidden group-hover:block absolute top-16 z-20 bg-white rounded-xl"
+                  class="hidden group-hover:block absolute top-16 z-20 rounded-xl bg-white"
                 >
-                  <div v-for="option in menuItem?.options" :key="option">
+                  <div v-for="option in menuItem?.children" :key="option">
                     <div
                       class="w-full dropdown p-1 text-base text-secondary whitespace-nowrap flex items-center justify-between"
                     >
                       <div
-                        class="flex items-center justify-between cursor-pointer hover:bg-[#DBEFDE] rounded-xl"
+                        class="flex items-center justify-between cursor-pointer hover:bg-[#C69A7A] rounded-xl"
                         @click="navigateTo(`/${menuItem.slug}/${option.slug}`)"
                       >
                         <div
@@ -208,8 +229,10 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                           {{ option.name }}
                         </div>
                         <div
-                          v-if="option?.options && option?.options?.length > 0"
-                          class="hover:bg-[#DBEFDE]"
+                          v-if="
+                            option?.children && option?.children?.length > 0
+                          "
+                          class="hover:bg-[#C69A7A]"
                         >
                           <DropRightMenu />
                         </div>
@@ -217,20 +240,20 @@ function handleClick(menuSlug, optionSlug, childSlug) {
 
                       <div class="hidden 2xl:block">
                         <div
-                          v-if="option?.options"
+                          v-if="option?.children"
                           id="dropdownMenuChild"
-                          class="dropdown-content top-0 left-full ml-[1px] rounded-xl"
+                          class="dropdown-content top-0 left-full ml-[1px] rounded-xl bg-white"
                         >
                           <div
-                            v-for="child in option?.options"
+                            v-for="child in option?.children"
                             :key="child"
                             class="p-1 w-full"
                           >
                             <div
-                              class="p-2 text-base text-secondary hover:bg-[#DBEFDE] hover:text-[#b68258] whitespace-nowrap rounded-xl pr-8 cursor-pointer"
+                              class="p-2 text-base text-secondary hover:bg-[#C69A7A] hover:text-[#b68258] whitespace-nowrap rounded-xl pr-8 cursor-pointer"
                               @click="
                                 navigateTo(
-                                  `/${menuItem?.slug}/${option?.slug}/${child?.slug}`
+                                  `/${menuItem?.slug}/${option?.slug}/${child?.slug}`,
                                 )
                               "
                             >
@@ -242,20 +265,20 @@ function handleClick(menuSlug, optionSlug, childSlug) {
 
                       <div class="2xl:hidden">
                         <div
-                          v-if="option?.options"
+                          v-if="option?.children"
                           id="dropdownMenuChild"
                           class="dropdown-content top-0 right-full mr-[1px] rounded-xl"
                         >
                           <div
-                            v-for="child in option?.options"
+                            v-for="child in option?.children"
                             :key="child"
                             class="p-1 w-full"
                           >
                             <div
-                              class="p-2 text-base text-secondary hover:bg-[#DBEFDE] hover:text-[#b68258] whitespace-nowrap rounded-xl pr-8 cursor-pointer"
+                              class="p-2 text-base text-secondary hover:bg-[#C69A7A] hover:text-[#b68258] whitespace-nowrap rounded-xl pr-8 cursor-pointer"
                               @click="
                                 navigateTo(
-                                  `/${menuItem?.slug}/${option?.slug}/${child?.slug}`
+                                  `/${menuItem?.slug}/${option?.slug}/${child?.slug}`,
                                 )
                               "
                             >
@@ -269,21 +292,6 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                 </div>
               </div>
             </div>
-            <div
-              v-for="(item, index) in menuItems"
-              :key="index"
-              class="flex items-center justify-center"
-            >
-              <div
-                class="mx-2 text-secondary hover:text-[#b68258] cursor-pointer"
-                :class="{
-                  'text-primary': routeSlug === `${item.slug}`,
-                }"
-                @click="navigateTo(`/${item.slug}`)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
 
             <div class="flex items-center justify-between">
               <div class="flex items-center justify-between">
@@ -292,7 +300,22 @@ function handleClick(menuSlug, optionSlug, childSlug) {
                 </div>
               </div>
             </div>
+          </div> -->
+          <div class="hidden lg:flex items-center justify-center">
+            <UNavigationMenu
+              arrow
+              content-orientation="vertical"
+              :items="navigationItems"
+              class="w-full text-base"
+              :ui="{
+                childList: 'w-[400px]',
+                childLinkLabel: 'whitespace-normal break-words leading-snug',
+              }"
+            />
           </div>
+          <!-- <div class="hidden lg:block w-full">
+            <RecursiveMenu :items="navigationItems" />
+          </div> -->
         </div>
       </div>
     </div>
@@ -302,12 +325,12 @@ function handleClick(menuSlug, optionSlug, childSlug) {
       placement="left"
       :class-list="['w-[75%]', 'px-[18px]']"
     >
-      <div class="px-4 mb-[350px]">
+      <div class="mb-[350px]">
         <div class="w-full flex items-center py-2 mb-2 mt-2">
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Tìm kiếm sản phẩm..."
+            placeholder="Tìm kiếm ..."
             class="py-[18px] pl-4 pr-1 w-full h-[36px] text-secondary text-base border border-[#b68258] focus:outline-none rounded-xl"
             @input="onInputMb"
           />
@@ -323,7 +346,7 @@ function handleClick(menuSlug, optionSlug, childSlug) {
         <div
           v-if="searchResults?.length > 0"
           ref="searchResultsContainer"
-          class="bg-white absolute z-[200] md:w-[90%] sm:w-[85%] w-[82%] rounded-2xl p-[15px] space-y-2 text-secondary border border-gray-200"
+          class="absolute z-[200] md:w-[90%] sm:w-[85%] w-[82%] rounded-2xl p-[15px] space-y-2 text-secondary border border-gray-200"
         >
           <div class="space-y-2">
             <div
@@ -338,173 +361,14 @@ function handleClick(menuSlug, optionSlug, childSlug) {
           </div>
         </div>
 
-        <NuxtLink to="/" class="text-secondary mr-2">
+        <NuxtLink to="/" class="text-secondary mr-2" @click="toggleMenu">
           <span :class="{ 'text-primary': route.path === '/' }" class=""
             >Trang chủ</span
           >
         </NuxtLink>
         <Divider class="my-[13px]" />
-        <div v-for="menuItem in visibleCategories" :key="menuItem.id">
-          <div v-if="menuItem.options.length === 0">
-            <NuxtLink :to="`/${menuItem.slug}`">
-              <div
-                :class="{
-                  'flex items-center justify-start text-primary':
-                    isExpanded[menuItem.id],
-                  'flex items-center justify-start text-title':
-                    !isExpanded[menuItem.id],
-                }"
-                @click="toggleCollapse(menuItem.id)"
-              >
-                {{ menuItem.name }}
-              </div>
-            </NuxtLink>
-          </div>
 
-          <div
-            v-else
-            :class="{
-              'flex items-center justify-start text-primary':
-                isExpanded[menuItem.id],
-              'flex items-center justify-start text-title':
-                !isExpanded[menuItem.id],
-            }"
-            @click="toggleCollapse(menuItem.id)"
-          >
-            <div @click="toggleMenu">
-              <NuxtLink :to="`/${menuItem.slug}`">
-                {{ menuItem.name }}
-              </NuxtLink>
-            </div>
-            <ClientOnly>
-              <div
-                v-if="menuItem?.options && menuItem?.options?.length > 0"
-                class="ml-auto"
-                @click="toggleCollapse(menuItem.id)"
-              >
-                <div>
-                  <img
-                    :src="
-                      isExpanded[menuItem.id]
-                        ? '/svg/arrow-down.svg'
-                        : '/svg/arrow-right.svg'
-                    "
-                    alt="icon"
-                    @click="toggleCollapse(menuItem.id)"
-                  />
-                </div>
-              </div>
-            </ClientOnly>
-          </div>
-
-          <div
-            class="overflow-hidden transition-all duration-[700]"
-            :class="
-              isExpanded[menuItem.id]
-                ? 'max-h-full opacity-100'
-                : 'max-h-0 opacity-0'
-            "
-          >
-            <div
-              v-for="option in menuItem?.options"
-              :key="option.id"
-              class="pt-[13px] pb-[5px] pl-[18px] text-sm"
-            >
-              <div v-if="option.options.length === 0">
-                <NuxtLink
-                  :to="`/${menuItem.slug}/${option.slug}`"
-                  @click="toggleMenu"
-                >
-                  <div
-                    :class="{
-                      'flex items-center justify-start text-primary':
-                        isChildExpanded[option.id],
-                      'flex items-center justify-start text-secondary':
-                        !isChildExpanded[option.id],
-                    }"
-                    @click="toggleChildCollapse(option.id)"
-                  >
-                    {{ option.name }}
-                  </div>
-                </NuxtLink>
-              </div>
-
-              <div
-                v-else
-                :class="{
-                  'flex items-center justify-start text-primary':
-                    isChildExpanded[option.id],
-                  'flex items-center justify-start text-title':
-                    !isChildExpanded[option.id],
-                }"
-                @click="toggleChildCollapse(option.id)"
-              >
-                <div @click="toggleMenu">
-                  <NuxtLink :to="`/${menuItem.slug}/${option.slug}`">
-                    {{ option.name }}
-                  </NuxtLink>
-                </div>
-                <ClientOnly>
-                  <div
-                    v-if="option?.options && option?.options?.length > 0"
-                    class="ml-auto"
-                    @click="toggleChildCollapse(option.id)"
-                  >
-                    <div>
-                      <img
-                        :src="
-                          isChildExpanded[option.id]
-                            ? '/svg/arrow-down.svg'
-                            : '/svg/arrow-right.svg'
-                        "
-                        alt="icon"
-                        @click="toggleChildCollapse(option.id)"
-                      />
-                    </div>
-                  </div>
-                </ClientOnly>
-              </div>
-
-              <div
-                class="overflow-hidden transition-all duration-[700]"
-                :class="{
-                  'max-h-full opacity-100': isChildExpanded[option.id],
-                  'max-h-0 opacity-0': !isChildExpanded[option.id],
-                }"
-              >
-                <div
-                  v-for="(child, indexChild) in option?.options"
-                  :key="indexChild"
-                  class="pt-[13px] pb-[5px] pl-[18px] text-sm"
-                >
-                  <div
-                    class="text-secondary"
-                    @click="handleClick(menuItem.slug, option.slug, child.slug)"
-                  >
-                    {{ child.name }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Divider class="my-[13px]" />
-        </div>
-
-        <div v-for="(item, index) in menuItems" :key="index">
-          <NuxtLink :to="`/${item.slug}`" @click="toggleMenu">
-            <div class="transition-all duration-300 text-title">
-              {{ item.name }}
-            </div>
-          </NuxtLink>
-          <Divider class="my-[13px]" />
-        </div>
-
-        <div class="text-secondary hover:text-[#b68258] cursor-pointer">
-          <a href="https://wifi247.vn" class="" target="_blank">
-            Dịch vụ khác</a
-          >
-        </div>
+        <UMenuMobile :items="visibleCategories" @item-click="toggleMenu" />
       </div>
     </Drawer>
   </div>

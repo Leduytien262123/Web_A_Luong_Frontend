@@ -6,7 +6,7 @@
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect width="60" height="60" rx="24" fill="#39B54A" />
+    <rect width="60" height="60" rx="24" fill="#b68258" />
     <path
       d="M26 28L30 24M30 24L34 28M30 24V36"
       stroke="white"

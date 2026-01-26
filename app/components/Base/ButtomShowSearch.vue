@@ -3,7 +3,7 @@
     <div class="fixed z-50 inset-0 pointer-events-none">
       <div
         :class="drawerClass"
-        class="absolute left-1/2 transform -translate-x-1/2 bg-white w-[705px] h-[86px] rounded-2xl shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out z-50"
+        class="absolute left-1/2 transform -translate-x-1/2 w-[705px] h-[86px] rounded-2xl shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out z-50"
       >
         <slot />
       </div>
@@ -13,7 +13,10 @@
 </template>
 
 <script setup>
-const show = defineModel("show");
+const show = defineModel("show", {
+  type: Boolean,
+  default: false,
+});
 const props = defineProps({
   classList: {
     type: String,
@@ -49,7 +52,7 @@ watch(
     const SW = getScrollbarWidth();
     htmlElement.style.overflow = newValue ? "hidden" : "";
     htmlElement.style.marginRight = newValue ? SW + "px" : "";
-  }
+  },
 );
 
 onBeforeUnmount(() => {

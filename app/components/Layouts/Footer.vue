@@ -14,18 +14,30 @@
         </div>
         <div class="text-base mt-6">
           <div class="py-1.5 flex items-center">
-            <Address />
+            <UIcon
+              name="ph:map-pin"
+              class="min-h-5 min-w-5 text-secondary"
+              aria-hidden="true"
+            />
             <span class="ml-3">
               Thông tin liên hệ: Luật sư Lê Duy Lượng, Đoàn Luật sư Thành phố Hồ
               Chí Minh
             </span>
           </div>
           <div class="py-1.5 flex items-center">
-            <Phone />
+            <UIcon
+              name="ph:phone"
+              class="min-h-5 min-w-5 text-secondary"
+              aria-hidden="true"
+            />
             <span class="ml-3"> 0961.646.868 </span>
           </div>
           <div class="py-1.5 flex items-center">
-            <MessageCskh />
+            <UIcon
+              name="ph:chat"
+              class="min-h-5 min-w-5 text-secondary"
+              aria-hidden="true"
+            />
             <span class="ml-3"> Zalo: 0961.646.868 </span>
           </div>
         </div>
@@ -66,7 +78,7 @@
 
       <div class="w-[286px]">
         <div class="text-lg text-title py-2 font-medium">
-          Kết nối với Luật đất đai
+          Kết nối với luật sư
         </div>
         <div class="py-1 flex">
           <!-- <div
@@ -133,6 +145,6 @@ const props = defineProps({
 const products = props.categories;
 
 const filteredProducts = computed(() =>
-  products.filter((item) => item.visible_footer === 1)
+  products.filter((item) => item.visible_footer === 1),
 );
 </script>

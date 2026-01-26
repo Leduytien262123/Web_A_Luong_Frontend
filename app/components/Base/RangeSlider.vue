@@ -84,22 +84,22 @@ const inputMaxValue = (event) => {
         :style="{ left: sliderStyle.leftThumbMax }"
       ></span>
       <input
+        v-model="sliderMinValue"
         type="range"
         :min="min"
         :max="max"
         :step="step"
-        v-model="sliderMinValue"
-        @input="inputMinValue"
         class="absolute top-0 left-0 w-full h-3 opacity-0"
+        @input="inputMinValue"
       />
       <input
+        v-model="sliderMaxValue"
         type="range"
         :min="min"
         :max="max"
         :step="step"
-        v-model="sliderMaxValue"
-        @input="inputMaxValue"
         class="absolute top-0 left-0 w-full h-3 opacity-0"
+        @input="inputMaxValue"
       />
     </div>
   </div>

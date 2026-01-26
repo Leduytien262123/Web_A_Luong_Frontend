@@ -17,16 +17,22 @@
     "@nuxt/ui": "4.3.0",
     "@pinia/nuxt": "^0.11.3",
     "@unhead/vue": "^2.0.3",
+    "@vueuse/motion": "^3.0.3",
+    "animate.css": "^4.1.1",
+    "dayjs": "^1.11.19",
+    "dompurify": "^2.4.0",
     "nuxt": "^4.2.2",
     "nuxt-swiper": "2.0.1",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "typescript": "^5.6.3",
-    "dompurify": "^2.4.0",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "tailwindcss": "^4.1.18"
+    "@iconify-json/lucide": "^1.2.86",
+    "@iconify-json/simple-icons": "^1.2.66",
+    "tailwindcss": "^4.1.18",
+    "unocss": "^66.6.0"
   }
 }

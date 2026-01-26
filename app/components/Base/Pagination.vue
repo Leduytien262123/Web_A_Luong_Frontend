@@ -14,8 +14,8 @@ const { totalPages, currentPage, pageSizeOptions, defaultPageSize } =
       default: 0,
     },
     pageSizeOptions: {
-      type: Object,
-      default: [10, 20, 30],
+      type: Array,
+      default: () => [10, 20, 30],
     },
     defaultPageSize: {
       type: Number,
@@ -43,18 +43,14 @@ const selectedItem = ref(defaultPageSize);
       </div>
       <div class="flex flex-wrap items-center justify-center">
         <button
-          class="page-item"
-          @click="$emit('onChangePage', currentPage - 1)"
           :disabled="currentPage === 1"
+          class="flex items-center text-[#4E4E4E] text-sm justify-center w-7 h-7 bg-[#F2F2F2] rounded-md m-1.5 page-item"
+          @click="$emit('onChangePage', currentPage - 1)"
         >
           <BackItem />
         </button>
         <template v-for="pageNumber in totalPages" :key="pageNumber">
           <button
-            class="page-item"
-            :class="pageNumber === currentPage ? 'page-item-current' : ''"
-            @click="$emit('onChangePage', pageNumber)"
-            :disabled="pageNumber === currentPage"
             v-if="
               totalPages <= 6 ||
               pageNumber === 1 ||
@@ -65,12 +61,14 @@ const selectedItem = ref(defaultPageSize);
               (currentPage < 1 + 4 && pageNumber <= 1 + 4) ||
               (currentPage > totalPages - 4 && pageNumber >= totalPages - 4)
             "
+            :disabled="pageNumber === currentPage"
+            class="flex items-center text-[#4E4E4E] text-sm justify-center w-7 h-7 bg-[#F2F2F2] rounded-md m-1.5 page-item"
+            :class="pageNumber === currentPage ? 'text-white bg-[#b68258]' : ''"
+            @click="$emit('onChangePage', pageNumber)"
           >
             {{ pageNumber }}
           </button>
           <button
-            class="page-item"
-            @click="$emit('onChangePage', pageNumber)"
             v-else-if="
               (totalPages > 6 && pageNumber === currentPage - 2) ||
               pageNumber === currentPage + 2 ||
@@ -78,14 +76,16 @@ const selectedItem = ref(defaultPageSize);
               (currentPage > totalPages - 4 &&
                 pageNumber === totalPages - 4 - 1)
             "
+            class="flex items-center text-[#4E4E4E] text-sm justify-center w-7 h-7 bg-[#F2F2F2] rounded-md m-1.5 page-item"
+            @click="$emit('onChangePage', pageNumber)"
           >
             <span>...</span>
           </button>
         </template>
         <button
-          class="page-item"
-          @click="$emit('onChangePage', currentPage + 1)"
           :disabled="currentPage === totalPages"
+          class="flex items-center text-[#4E4E4E] text-sm justify-center w-7 h-7 bg-[#F2F2F2] rounded-md m-1.5 page-item"
+          @click="$emit('onChangePage', currentPage + 1)"
         >
           <DropRightMenu />
         </button>
@@ -110,15 +110,8 @@ const selectedItem = ref(defaultPageSize);
 </template>
 
 <style scoped>
-.page-item {
-  @apply flex items-center text-[#4E4E4E] text-sm justify-center w-7 h-7 bg-[#F2F2F2] rounded-md m-1.5;
-}
-
-.page-item-current {
-  @apply text-white bg-[#39b54a];
-}
-
 .page-item:hover {
-  @apply bg-[#DBEFDE] text-[#39b54a];
+  background: #f0dac8;
+  color: #b68258;
 }
 </style>

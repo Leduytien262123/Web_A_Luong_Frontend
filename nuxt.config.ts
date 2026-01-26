@@ -12,13 +12,27 @@ export default defineNuxtConfig({
     },
   ],
 
+  colorMode: {
+    preference: "light",
+    fallback: "light",
+    classSuffix: "",
+  },
+
   modules: [
     "@nuxt/eslint",
     "@nuxt/image",
     "@nuxt/scripts",
     "@nuxt/ui",
     "nuxt-swiper",
+    "@vueuse/motion/nuxt",
+    "@nuxt/icon",
   ],
+
+  runtimeConfig: {
+    public: {
+      baseUrl: process.env.NUXT_PUBLIC_BASE_URL || "http://localhost:4848",
+    },
+  },
 
   app: {
     head: {
