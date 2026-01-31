@@ -14,9 +14,9 @@
         width="19"
         height="19"
         rx="9.5"
-        stroke="#39B54A"
+        stroke="#b68258"
       />
-      <circle cx="24" cy="24" r="4" fill="#39B54A" />
+      <circle cx="24" cy="24" r="4" fill="#b68258" />
     </g>
     <defs>
       <filter

@@ -15,7 +15,7 @@
       </div>
       <button
         v-if="isVisibleNews"
-        class="py-3 px-6 border border-[#39B54A] rounded-full flex items-center hover:scale-110 transition duration-300 ease-in-out mt-3 lg:mt-0"
+        class="py-3 px-6 border border-[#b68258] rounded-full flex items-center hover:scale-110 transition duration-300 ease-in-out mt-3 lg:mt-0"
         :class="{ 'animLeft reveal active': isVisibleNews }"
         @click="showModalTel = true"
       >
@@ -140,7 +140,7 @@ onMounted(async () => {
   try {
     _dompurify = (await import("dompurify")).default;
     sanitizedItems.value = items.value.map((i) =>
-      _dompurify.sanitize(i.content)
+      _dompurify.sanitize(i.content),
     );
   } catch (e) {
     sanitizedItems.value = items.value.map(() => "");
@@ -160,7 +160,7 @@ onMounted(async () => {
         }, 500);
       }
     },
-    { threshold: 0.1 }
+    { threshold: 0.1 },
   );
   if (sectionRef.value) {
     observer.observe(sectionRef.value);
@@ -172,13 +172,13 @@ watch(
   (newItems) => {
     if (_dompurify) {
       sanitizedItems.value = newItems.map((i) =>
-        _dompurify.sanitize(i.content)
+        _dompurify.sanitize(i.content),
       );
     } else {
       sanitizedItems.value = newItems.map(() => "");
     }
   },
-  { deep: true }
+  { deep: true },
 );
 
 const showModalTel = ref(false);
@@ -202,7 +202,7 @@ onMounted(() => {
         }, 500);
       }
     },
-    { threshold: 0.1 }
+    { threshold: 0.1 },
   );
   if (sectionRef.value) {
     observer.observe(sectionRef.value);

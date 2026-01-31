@@ -3,6 +3,7 @@ import Trait from "~/components/Main/Trait.vue";
 import Develop from "~/components/Main/Develop.vue";
 
 const { restAPI } = useApi();
+const config = useRuntimeConfig();
 
 const { data: resDataDetail } = await restAPI.articles.getDataCategoryHome({
   params: {
@@ -80,17 +81,17 @@ const orderedHomeComponents = computed(() => {
   return items.sort((a, b) => a.pos - b.pos);
 });
 
-// useHead({
-//   title: "Sim247 - Sim du lịch quốc tế",
-//   link: [{ ref: "canonical", href: config.public.domainUrl }],
-// });
+useHead({
+  title: "Quản trị rủi do đầu tư xây dựng",
+  link: [{ ref: "canonical", href: config.public.domainUrl }],
+});
 
-// useSeoMeta({
-//   title: "Sim247 - Sim du lịch quốc tế",
-//   description:
-//     "Sim247 - Sim du lịch quốc tế, Chuyên sim du lịch giá rẻ giá ngon đảm bảo chất lượng",
-//   keywords: "sim du lịch, sim du lịch giá rẻ, sim du lịch chất lượng",
-// });
+useSeoMeta({
+  title: "Quản trị rủi do đầu tư xây dựng",
+  description:
+    "Cung cấp các giải pháp quản trị rủi ro toàn diện trong đầu tư xây dựng, giúp doanh nghiệp tối ưu hóa hiệu quả và giảm thiểu rủi ro.",
+  keywords: "Quản trị rủi ro, đầu tư xây dựng, giải pháp quản trị",
+});
 </script>
 
 <template>

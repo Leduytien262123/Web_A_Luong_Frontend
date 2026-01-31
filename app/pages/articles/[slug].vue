@@ -170,6 +170,7 @@ const linksBreadcrumb = computed(() => {
           :new-detail="newDetail"
           class="lg:w-[70%] w-full lg:mr-[30px]"
         />
+
         <NewCategory
           class="lg:w-[30%] hidden lg:block"
           :categories-raw="categoriesRaw"

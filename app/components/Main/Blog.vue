@@ -143,7 +143,7 @@ const totalArticlesCount = computed(() =>
 
 function getArticleImage(item) {
   return (
-    item?.content?.images?.[0]?.url ||
+    item?.content?.cover_photo?.[0]?.url ||
     item?.metadata?.meta_image?.[0]?.url ||
     ""
   );

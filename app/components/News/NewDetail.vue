@@ -16,6 +16,42 @@ function formatDate(dateString) {
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
+
+function iframeSrc(file) {
+  if (!file || !file.url) return "";
+  try {
+    const url = file.url;
+    const ext = url.split(".").pop().split(/[#?]/)[0].toLowerCase();
+    const officeExt = ["doc", "docx", "xls", "xlsx", "ppt", "pptx"];
+    const imageExt = ["png", "jpg", "jpeg", "gif", "webp", "svg"];
+    if (officeExt.includes(ext)) {
+      return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+    }
+    if (ext === "pdf") {
+      return url;
+    }
+    if (imageExt.includes(ext)) {
+      return url;
+    }
+    return `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+  } catch (e) {
+    console.log(e);
+    return file.url || "";
+  }
+}
+
+function isImage(file) {
+  if (!file || !file.url) return false;
+  try {
+    const url = file.url;
+    const ext = url.split(".").pop().split(/[#?]/)[0].toLowerCase();
+    const imageExt = ["png", "jpg", "jpeg", "gif", "webp", "svg"];
+    return imageExt.includes(ext);
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
 </script>
 
 <template>
@@ -39,6 +75,52 @@ function formatDate(dateString) {
       v-html="newDetail?.content?.content"
       class="-pt-10 description-blog text-secondary"
     ></div>
+
+    <div v-if="newDetail?.content?.list_file?.length" class="mt-6">
+      <h3 class="text-lg font-medium mb-2">Tệp đính kèm</h3>
+      <div
+        v-for="(file, idx) in newDetail?.content?.list_file"
+        :key="idx"
+        class="mb-6"
+      >
+        <template v-if="isImage(file)">
+          <img
+            :src="file.url"
+            alt="attachment"
+            style="
+              display: block;
+              width: auto;
+              max-width: 100%;
+              height: auto;
+              max-height: 600px;
+            "
+          />
+        </template>
+
+        <template v-else>
+          <div style="overflow: auto">
+            <iframe
+              v-if="iframeSrc(file)"
+              :src="iframeSrc(file)"
+              style="width: 100%; height: 600px; border: 0"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </template>
+
+        <div class="mt-2 text-sm">
+          <a
+            :href="file.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-primary"
+            >Mở tệp trong tab mới</a
+          >
+        </div>
+      </div>
+    </div>
+
     <div class="flex flex-wrap gap-4 mt-8">
       <div
         v-for="tag in newDetail?.tags"
@@ -57,7 +139,7 @@ function formatDate(dateString) {
 <style lang="css" scoped>
 body a {
   text-decoration: none !important;
-  color: #39b54a !important;
+  color: #b68258 !important;
 }
 
 :deep(.description-blog > h2) {
@@ -137,18 +219,18 @@ body a {
 }
 
 :deep(.description-blog > p > span > a) {
-  color: #39b54a;
+  color: #b68258;
 }
 
 :deep(.description-blog > span > a) {
-  color: #39b54a;
+  color: #b68258;
 }
 
 :deep(.description-blog > p > a) {
-  color: #39b54a;
+  color: #b68258;
 }
 
 :deep(.description-blog > a) {
-  color: #39b54a;
+  color: #b68258;
 }
 </style>

@@ -64,7 +64,7 @@ onMounted(() => {
               Xem thêm FAQ
             </button>
             <button
-              class="py-3 px-6 border border-[#39B54A] rounded-full flex items-center hover:scale-105 transition duration-300 ease-in-out"
+              class="py-3 px-6 border border-[#b68258] rounded-full flex items-center hover:scale-105 transition duration-300 ease-in-out"
               @click="showModalTel = true"
             >
               <span class="mr-2 text-primary">Liên hệ ngay</span>
