@@ -11,7 +11,7 @@ const slug = categorySegments.at(-1) || "";
 const { data: resData } = await restAPI.articles.getArticleCategories({
   params: {
     page: 1,
-    limit: 1000,
+    limit: 100,
   },
 });
 

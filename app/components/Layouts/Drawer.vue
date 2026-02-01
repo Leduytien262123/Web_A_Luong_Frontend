@@ -3,7 +3,7 @@
     <div class="fixed lg:z-[100] z-[40] inset-0 pointer-events-none">
       <div
         :class="drawerClass"
-        class="inset-y-0 break-words absolute pointer-events-auto z-[40] transition-all duration-300 ease-in-out bg-[white] w-[75%] min-h-screen overflow-x-hidden overflow-y-auto mt-[122px] lg:mt-0"
+        class="inset-y-0 break-words absolute pointer-events-auto z-[40] transition-all duration-300 ease-in-out bg-[white] w-[75%] min-h-screen overflow-x-hidden overflow-y-auto mt-[145px] lg:mt-0"
       >
         <slot />
       </div>
@@ -38,8 +38,8 @@ const drawerClass = computed(() => {
         ? " left-0"
         : " -left-full"
       : show.value
-      ? " right-0"
-      : " -right-full";
+        ? " right-0"
+        : " -right-full";
   const extra = Array.isArray(props.classList)
     ? props.classList.join(" ")
     : props.classList || "";
@@ -49,7 +49,7 @@ const drawerClass = computed(() => {
 
 const overlayClass = computed(() => {
   return show.value
-    ? "opacity-25 pointer-events-auto bg-black fixed top-0 left-0 w-screen h-screen z-30 block"
+    ? "opacity-25 pointer-events-auto bg-black fixed top-[145px] left-0 w-screen h-screen z-30 block"
     : "pointer-events-none";
 });
 
@@ -60,7 +60,7 @@ watch(
     const SW = getScrollbarWidth();
     htmlElement.style.overflow = newValue ? "hidden" : "";
     htmlElement.style.marginRight = newValue ? SW + "px" : "";
-  }
+  },
 );
 
 onBeforeUnmount(() => {

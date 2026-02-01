@@ -134,8 +134,8 @@ const toggleMenu = () => {
 <template>
   <div class="bg-white">
     <div class="relative">
-      <div class="sticky top-0 z-[45] w-full">
-        <div class="w-full lg:w-auto gap-4 bg-primary text-center z-60">
+      <div class="sticky top-0 z-[9999] w-full">
+        <div class="w-full lg:w-auto gap-4 bg-primary text-center z-[10000]">
           <h1
             v-if="['/'].includes(route.path)"
             class="text-white py-3"
@@ -168,6 +168,21 @@ const toggleMenu = () => {
           </div>
 
           <div class=""></div>
+          <div
+            v-if="showDrawer"
+            class="flex items-center justify-center ml-auto"
+          >
+            <div
+              @click="
+                () => {
+                  showDrawer = false;
+                }
+              "
+              class="mr-2"
+            >
+              <Close />
+            </div>
+          </div>
 
           <!-- <div class="hidden lg:flex items-center justify-center text-base">
             <div class="py-4 flex text-base">
@@ -361,12 +376,21 @@ const toggleMenu = () => {
           </div>
         </div>
 
-        <NuxtLink to="/" class="text-secondary mr-2" @click="toggleMenu">
+        <div
+          to="/"
+          class="text-secondary ml-2 pb-2 cursor-pointer"
+          @click="
+            () => {
+              navigateTo('/');
+              toggleMenu;
+            }
+          "
+        >
           <span :class="{ 'text-primary': route.path === '/' }" class=""
             >Trang chủ</span
           >
-        </NuxtLink>
-        <Divider class="my-[13px]" />
+        </div>
+        <!-- <Divider class="my-[13px]" /> -->
 
         <UMenuMobile :items="visibleCategories" @item-click="toggleMenu" />
       </div>

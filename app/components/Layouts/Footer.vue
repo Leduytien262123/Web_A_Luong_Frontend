@@ -53,7 +53,7 @@
       </div>
 
       <div v-else class="flex my-10">
-        <div class="w-[50%]">
+        <!-- <div class="w-[50%]">
           <div class="text-lg text-title py-1.5 font-medium">Sản phẩm</div>
           <div v-for="link in filteredProducts" :key="link.id" class="py-1.5">
             <span
@@ -64,7 +64,7 @@
               {{ link.name }}</span
             >
           </div>
-        </div>
+        </div> -->
 
         <div class="w-[50%]">
           <div class="text-lg text-title py-1.5 font-medium">Về chúng tôi</div>
@@ -91,7 +91,7 @@
           >
             <CallPhone />
           </div> -->
-          <div
+          <!-- <div
             class="ml-1.5 w-10 h-10 flex items-center justify-center rounded-xl bg-white"
           >
             <a
@@ -101,7 +101,7 @@
             >
               <Facebook
             /></a>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -109,7 +109,7 @@
   <div
     class="w-full h-[68px] bg-primary flex items-center justify-center text-white text-base"
   >
-    2026 @ Bản quyền thuộc về Duy Tiến
+    2026 @ Bản quyền thuộc về Lê Duy Lượng
   </div>
 </template>
 
@@ -135,16 +135,16 @@ onUnmounted(() => {
 
 const PC = computed(() => width.value >= 1024);
 
-const props = defineProps({
-  categories: {
-    type: Array,
-    default: () => [],
-  },
-});
+// const props = defineProps({
+//   categories: {
+//     type: Array,
+//     default: () => [],
+//   },
+// });
 
-const products = props.categories;
+// const products = props.categories;
 
-const filteredProducts = computed(() =>
-  products.filter((item) => item.visible_footer === 1),
-);
+// const filteredProducts = computed(() =>
+//   products.filter((item) => item.visible_footer === 1),
+// );
 </script>

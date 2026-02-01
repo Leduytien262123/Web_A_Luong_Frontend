@@ -159,7 +159,7 @@ const linksBreadcrumb = computed(() => {
     <div v-if="isObjectNullOrEmpty(newDetail)">
       <PageNotAvailable />
     </div>
-    <div v-else class="md:mt-[40px] mt-3">
+    <div v-else class="md:mt-[40px] mt-12">
       <UBreadcrumb
         :items="linksBreadcrumb"
         class="text-center width-new mt-1"
