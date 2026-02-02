@@ -29,7 +29,9 @@ const articlesFeatured = computed(() => {
   if (Array.isArray(featured?.articles)) return featured.articles;
   return [];
 });
-const tags = computed(() => props.tags ?? []);
+const tags = computed(() => {
+  return props.tags ?? [];
+});
 
 const news = [];
 

@@ -27,7 +27,7 @@ const categoriesRaw = categoriesDataRaw?.value?.data?.categories ?? [];
 const { data: tagsData } = await useAsyncData("article-tags", () =>
   restAPI.articles.getArticleTags({ params: { current: 1, pageSize: 10 } }),
 );
-const tags = tagsData?.value?.data?.tags ?? tagsData?.value?.tags ?? [];
+const tags = tagsData?.value?.data?.value?.data?.tags ?? [];
 
 const slugify = (text = "") =>
   text

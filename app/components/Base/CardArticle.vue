@@ -15,7 +15,6 @@ const navigateTo = (path) => {
 const items = computed(() => {
   return props.items || [];
 });
-// console.log("🚀 ~ items:", items.value);
 </script>
 
 <template>
