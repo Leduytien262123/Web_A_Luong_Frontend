@@ -167,7 +167,7 @@ const toggleMenu = () => {
             </NuxtLink>
           </div>
 
-          <div class=""></div>
+          <div class="w-[29.5px] lg:hidden"></div>
           <div
             v-if="showDrawer"
             class="flex items-center justify-center ml-auto"

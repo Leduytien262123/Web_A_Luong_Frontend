@@ -32,7 +32,6 @@ const articles = computed(() => props.listArticles || []);
 const totalItems = computed(
   () => props.pagination?.total ?? articles.value.length ?? 0,
 );
-console.log("🚀 ~ totalItems:", totalItems.value);
 
 const linksBreadcrumb = computed(() => {
   const links = [{ label: "Trang chủ", to: "/", disabled: false }];

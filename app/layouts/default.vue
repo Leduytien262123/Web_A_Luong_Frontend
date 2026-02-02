@@ -10,7 +10,7 @@
     </div>
 
     <div id="zalo-vr" :class="zaloVrClass">
-      <a
+      <!-- <a
         href="https://zalo.me/0961646868"
         class="flex flex-col items-center align-center min-w-[60px] cursor-pointer play"
         target="_blank"
@@ -20,7 +20,7 @@
             <MBotZalo class="pt-1.5" />
           </div>
         </div>
-      </a>
+      </a> -->
 
       <a
         href="tel:0961646868"
@@ -111,13 +111,8 @@ onBeforeUnmount(() => {
   window.removeEventListener("scroll", checkScroll);
 });
 
-const route = useRoute();
-
 const zaloVrClass = computed(() => {
-  if (route.path.startsWith("/sanpham/")) {
-    return "fixed z-[60] mt-32 lg:mt-0 lg:right-6 right-3 top-1/2 transform -translate-y-1/2 flex flex-col";
-  }
-  return "fixed z-[60] mb-20 lg:right-6 right-3 lg:top-1/2 transform lg:-translate-y-1/2 bottom-5 lg:bottom-64 flex flex-col";
+  return "fixed z-[60] mb-20 lg:right-6 right-3 lg:top-[73%] transform lg:-translate-y-1/2 bottom-5 lg:bottom-64 flex flex-col";
 });
 </script>
 

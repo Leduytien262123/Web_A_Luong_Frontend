@@ -102,7 +102,8 @@ function isImage(file) {
             <iframe
               v-if="iframeSrc(file)"
               :src="iframeSrc(file)"
-              style="width: 100%; height: 600px; border: 0"
+              style="border: 0"
+              class="w-full lg:h-[600px] h-[400px]"
               frameborder="0"
               allowfullscreen
             ></iframe>

@@ -32,14 +32,14 @@
             />
             <span class="ml-3"> 0961.646.868 </span>
           </div>
-          <div class="py-1.5 flex items-center">
+          <!-- <div class="py-1.5 flex items-center">
             <UIcon
               name="ph:chat"
               class="min-h-5 min-w-5 text-secondary"
               aria-hidden="true"
             />
             <span class="ml-3"> Zalo: 0961.646.868 </span>
-          </div>
+          </div> -->
         </div>
       </div>
 

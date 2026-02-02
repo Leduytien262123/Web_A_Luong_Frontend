@@ -49,7 +49,6 @@ const listArticles = computed(() => resDataDetail.value?.data?.articles || []);
 const pagination = computed(() => {
   return resDataDetail.value?.data?.pagination || {};
 });
-console.log("🚀 ~ pagination:", pagination.value);
 
 const hasCategory = computed(() => Boolean(categoryDetail.value?.id));
 const isSlugValid = computed(
