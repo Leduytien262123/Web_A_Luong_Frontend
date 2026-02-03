@@ -143,7 +143,7 @@ const toggleMenu = () => {
           >
             Quản Trị Rủi Ro Dự Án Đầu Tư Xây Dựng
           </h1>
-          <p v-else class="text-white text-base py-3">
+          <p v-else class="text-white text-lg font-normal py-2.5">
             Quản Trị Rủi Ro Dự Án Đầu Tư Xây Dựng
           </p>
         </div>
