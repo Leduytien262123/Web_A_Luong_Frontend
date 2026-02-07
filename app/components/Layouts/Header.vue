@@ -1,5 +1,7 @@
 <script setup>
-const { restAPI } = useApi();
+const {
+  public: { baseUrl },
+} = useRuntimeConfig();
 
 const props = defineProps({
   categories: {
@@ -18,11 +20,12 @@ const articles = ref([]);
 const apiArticles = computed(() => articles.value || []);
 
 const listArticles = async () => {
+  if (!import.meta.client) return;
+
   try {
-    const { data: res } = await restAPI.articles.getAllArticles({
-      server: false,
+    const payload = await $fetch("/api/articles/all", {
+      baseURL: baseUrl,
     });
-    const payload = res?.value ?? {};
     const list = payload?.data?.articles ?? payload?.articles ?? [];
     articles.value = list;
   } catch (e) {
