@@ -27,7 +27,7 @@ const items = computed(() => {
       <div class="h-full flex flex-col overflow-hidden bg-white">
         <div class="relative aspect-[4/3] overflow-hidden rounded-lg">
           <img
-            :src="item.pic"
+            :src="item.pic || '/img/empty.jpg'"
             :alt="item.alt || item.title"
             class="h-full w-full object-cover transition duration-500 hover:scale-[1.05]"
             loading="lazy"

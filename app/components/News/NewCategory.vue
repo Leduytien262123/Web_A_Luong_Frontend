@@ -202,7 +202,7 @@ function formatDate(dateString) {
         </div>
         <!-- </div> -->
       </div>
-      <div class="mt-[26px] hidden lg:block">
+      <div v-if="articlesFeatured?.length" class="mt-[26px] hidden lg:block">
         <div class="text-lg font-medium">Bài viết nổi bật</div>
         <div
           v-for="item in articlesFeatured.slice(0, 5)"
@@ -285,7 +285,7 @@ function formatDate(dateString) {
           </swiper-container>
         </ClientOnly>
       </div>
-      <div class="lg:mt-[18px] mt-4">
+      <div v-if="tags?.length" class="lg:mt-[18px] mt-4">
         <div class="text-lg font-medium mb-3 flex items-center">
           <Tags class="mr-3" />
           <span class=""> Thẻ nổi bật </span>

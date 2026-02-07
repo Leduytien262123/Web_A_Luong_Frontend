@@ -61,7 +61,7 @@ function isImage(file) {
         {{ newDetail?.title }}
       </h1>
     </div>
-    <div class="flex items-center mt-2">
+    <div v-if="newDetail?.published_at" class="flex items-center mt-2">
       <div class="text-primary">
         Đăng ngày:
         {{ formatDate(newDetail?.published_at) }}
@@ -85,7 +85,7 @@ function isImage(file) {
       >
         <template v-if="isImage(file)">
           <img
-            :src="file.url"
+            :src="file.url || '/img/empty.jpg'"
             alt="attachment"
             style="
               display: block;

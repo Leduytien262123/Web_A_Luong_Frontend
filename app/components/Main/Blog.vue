@@ -11,7 +11,7 @@
       </div>
 
       <div class="article">
-        <div class="grid grid-cols-12 gap-5">
+        <div class="grid grid-cols-12 gap-x-5 gap-y-12">
           <div
             v-for="item in category?.articles"
             :key="item?.id || item?.slug || item?.title"
@@ -20,7 +20,7 @@
             <div class="h-full flex flex-col overflow-hidden bg-white">
               <div class="relative aspect-[4/3] overflow-hidden rounded-lg">
                 <img
-                  :src="getArticleImage(item)"
+                  :src="getArticleImage(item) || '/img/empty.jpg'"
                   :alt="getArticleAlt(item)"
                   class="h-full w-full object-cover transition duration-500 hover:scale-[1.05]"
                   loading="lazy"
@@ -69,7 +69,7 @@
                   Đọc bài
                 </UButton> -->
               </div>
-              <div class="flex justify-center mt-4">
+              <div class="flex justify-center">
                 <Button4
                   v-if="item?.slug"
                   :title="'Đọc bài'"

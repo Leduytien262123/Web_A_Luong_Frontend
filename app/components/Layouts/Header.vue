@@ -1,4 +1,6 @@
 <script setup>
+const { restAPI } = useApi();
+
 const props = defineProps({
   categories: {
     type: Array,
@@ -6,39 +8,63 @@ const props = defineProps({
   },
 });
 
-const searchQuery = ref(null);
 const searchResults = ref([]);
-const resultSearch = ref([]);
-let searchTimeout = null;
 const searchInput = ref(null);
 
-const handleSearch = () => {
-  const searchQueryTrimmed = searchQuery.value.trim().toLowerCase();
-  if (searchQueryTrimmed === "") {
-    return [];
+const searchModalOpen = ref(false);
+const searchTerm = ref("");
+
+const articles = ref([]);
+const apiArticles = computed(() => articles.value || []);
+
+const listArticles = async () => {
+  try {
+    const { data: res } = await restAPI.articles.getAllArticles({
+      server: false,
+    });
+    const payload = res?.value ?? {};
+    const list = payload?.data?.articles ?? payload?.articles ?? [];
+    articles.value = list;
+  } catch (e) {
+    console.error("Failed to fetch articles", e);
+    articles.value = [];
   }
-  const filteredResults = resultSearch.value.filter((item) => {
-    const scopeNormalized = item.scope
-      .toLowerCase()
-      .replace(/\s+/g, "") // Loại bỏ khoảng trắng
-      .split(",") // Tách các phần tử cách nhau bằng dấu phẩy
-      .join(""); // Nối lại thành một chuỗi liên tục
-    return (
-      item.name.toLowerCase().includes(searchQueryTrimmed) ||
-      scopeNormalized.includes(searchQueryTrimmed)
-    );
-  });
-
-  return filteredResults;
 };
 
-const onInputMb = () => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    const filteredResults = handleSearch();
-    searchResults.value = filteredResults;
-  });
-};
+const searchGroups = computed(() => [
+  {
+    id: "articles",
+    label: searchTerm.value
+      ? `Kết quả tìm kiếm "${searchTerm.value}"`
+      : "Bài viết",
+    items: (apiArticles?.value || []).map((a) => {
+      const to = `/articles/${a.slug}`;
+      return {
+        id: a.id,
+        label: a.title || a.label,
+        suffix: a.description || a.metadata?.meta_description || "",
+        to,
+        onSelect(e) {
+          e?.preventDefault?.();
+          searchModalOpen.value = false;
+          searchTerm.value = "";
+          router.push(to);
+        },
+        __raw: a,
+      };
+    }),
+  },
+]);
+
+// Mở modal search với shortcut Ctrl/Cmd + K
+defineShortcuts({
+  meta_k: {
+    usingInput: true,
+    handler: () => {
+      searchModalOpen.value = !searchModalOpen.value;
+    },
+  },
+});
 
 const searchResultsContainer = ref(null);
 
@@ -129,6 +155,10 @@ watch(showBaseSearch, async (newVal) => {
 const toggleMenu = () => {
   showDrawer.value = !showDrawer.value;
 };
+
+onMounted(async () => {
+  await listArticles();
+});
 </script>
 
 <template>
@@ -167,7 +197,19 @@ const toggleMenu = () => {
             </NuxtLink>
           </div>
 
-          <div class="w-[29.5px] lg:hidden"></div>
+          <div v-if="!showDrawer" class="w-[29.5px] lg:hidden">
+            <UButton
+              color="primary"
+              variant="ghost"
+              class="flex cursor-pointer"
+              @click="searchModalOpen = true"
+            >
+              <template #leading>
+                <UIcon name="i-lucide-search" class="size-6" />
+              </template>
+            </UButton>
+          </div>
+
           <div
             v-if="showDrawer"
             class="flex items-center justify-center ml-auto"
@@ -327,7 +369,53 @@ const toggleMenu = () => {
                 childLinkLabel: 'whitespace-normal break-words leading-snug',
               }"
             />
+            <UButton
+              icon="i-lucide-search"
+              color="primary"
+              variant="ghost"
+              class="hidden lg:flex cursor-pointer"
+              @click="searchModalOpen = true"
+            >
+              <!-- <template #leading>
+                <UIcon name="i-lucide-search" class="size-6" />
+              </template> -->
+            </UButton>
           </div>
+          <!-- Search Button -->
+
+          <!-- Search Modal -->
+          <UModal
+            v-model:open="searchModalOpen"
+            :ui="{ content: 'sm:max-w-2xl' }"
+          >
+            <template #content>
+              <UCommandPalette
+                v-model:search-term="searchTerm"
+                :groups="searchGroups"
+                placeholder="Tìm kiếm bài viết..."
+                :fuse="{
+                  fuseOptions: {
+                    includeMatches: true,
+                    keys: ['label', 'suffix'],
+                  },
+                  resultLimit: 20,
+                }"
+                close
+                class="h-96"
+                @update:open="searchModalOpen = $event"
+              >
+                <template #empty="{ searchTerm: term }">
+                  <div
+                    class="flex flex-col items-center justify-center py-8 text-muted"
+                  >
+                    <UIcon name="i-lucide-search-x" class="size-12 mb-2" />
+                    <p v-if="term">Không tìm thấy kết quả cho "{{ term }}"</p>
+                    <p v-else>Nhập từ khóa để tìm kiếm bài viết</p>
+                  </div>
+                </template>
+              </UCommandPalette>
+            </template>
+          </UModal>
           <!-- <div class="hidden lg:block w-full">
             <RecursiveMenu :items="navigationItems" />
           </div> -->
@@ -341,44 +429,9 @@ const toggleMenu = () => {
       :class-list="['w-[75%]', 'px-[18px]']"
     >
       <div class="mb-[350px]">
-        <div class="w-full flex items-center py-2 mb-2 mt-2">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Tìm kiếm ..."
-            class="py-[18px] pl-4 pr-1 w-full h-[36px] text-secondary text-base border border-[#b68258] focus:outline-none rounded-xl"
-            @input="onInputMb"
-          />
-          <button
-            aria-label="search"
-            class="min-w-[36px] min-h-[36px] ml-2 right-0 bg-primary rounded-full flex items-center justify-center"
-            @click="resultSearch"
-          >
-            <Search />
-          </button>
-        </div>
-
-        <div
-          v-if="searchResults?.length > 0"
-          ref="searchResultsContainer"
-          class="absolute z-[200] md:w-[90%] sm:w-[85%] w-[82%] rounded-2xl p-[15px] space-y-2 text-secondary border border-gray-200"
-        >
-          <div class="space-y-2">
-            <div
-              v-for="(result, index) in searchResults"
-              :key="index"
-              class="cursor-pointer"
-            >
-              <div @click="navigateTo(`/search/${result?.slug}`)">
-                {{ result.name }}
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div
           to="/"
-          class="text-secondary ml-2 pb-2 cursor-pointer"
+          class="text-[#8FA1B9] ml-2 pb-2 mt-4 font-medium cursor-pointer"
           @click="
             () => {
               navigateTo('/');
@@ -390,7 +443,6 @@ const toggleMenu = () => {
             >Trang chủ</span
           >
         </div>
-        <!-- <Divider class="my-[13px]" /> -->
 
         <UMenuMobile :items="visibleCategories" @item-click="toggleMenu" />
       </div>

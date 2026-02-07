@@ -90,6 +90,10 @@ class CMSManager {
   async getSearch(data) {
     return this.request.get(`${API_ENDPOINTS.articles}/nations`, data);
   }
+
+  async getAllArticles(data) {
+    return this.request.get(`${API_ENDPOINTS.articles}/articles/all`, data);
+  }
 }
 
 class RestAPI {
