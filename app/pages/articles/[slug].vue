@@ -6,28 +6,52 @@ const path = (route.path.split("/").filter(Boolean).pop() || "").toString();
 const config = useRuntimeConfig();
 
 const { restAPI } = useApi();
+// Guard SSR: API can fail on the server, so catch and fallback instead of throwing a 500
+let resDataDetail = ref(null);
+try {
+  const detailResponse = await restAPI.articles.getArticlesDetail(path);
+  resDataDetail = detailResponse?.data ?? ref(null);
+} catch (error) {
+  console.error("Failed to fetch article detail", error);
+  resDataDetail = ref(null);
+}
 
-const { data: resDataDetail } = await restAPI.articles.getArticlesDetail(path);
-
-const { data: featuredData } = await useAsyncData("articles-featured", () =>
-  restAPI.articles.getArticleFeatured({
+let featuredData = ref([]);
+try {
+  const { data } = await restAPI.articles.getArticleFeatured({
     params: { current: 1, pageSize: 100 },
-  }),
-);
+  });
+  featuredData = data;
+} catch (error) {
+  console.error("Failed to fetch featured articles", error);
+  featuredData = ref([]);
+}
 const articlesFeatured = featuredData?.value?.data ?? featuredData?.value ?? [];
 
-const { data: categoriesDataRaw } = await restAPI.articles.getArticleCategories(
-  {
+let categoriesDataRaw = ref([]);
+try {
+  const { data } = await restAPI.articles.getArticleCategories({
     params: { current: 1, pageSize: 100 },
-  },
-);
+  });
+  categoriesDataRaw = data;
+} catch (error) {
+  console.error("Failed to fetch article categories", error);
+  categoriesDataRaw = ref([]);
+}
 
 const categoriesRaw = categoriesDataRaw?.value?.data?.categories ?? [];
 
-const { data: tagsData } = await useAsyncData("article-tags", () =>
-  restAPI.articles.getArticleTags({ params: { current: 1, pageSize: 10 } }),
-);
-const tags = tagsData?.value?.data?.value?.data?.tags ?? [];
+let tagsData = ref([]);
+try {
+  const { data } = await restAPI.articles.getArticleTags({
+    params: { current: 1, pageSize: 10 },
+  });
+  tagsData = data;
+} catch (error) {
+  console.error("Failed to fetch article tags", error);
+  tagsData = ref([]);
+}
+const tags = tagsData?.value?.data?.tags ?? [];
 
 const slugify = (text = "") =>
   text
