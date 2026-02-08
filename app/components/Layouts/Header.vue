@@ -426,30 +426,32 @@ onMounted(async () => {
       </div>
     </div>
 
-    <Drawer
-      v-model:show="showDrawer"
-      placement="left"
-      :class-list="['w-[75%]', 'px-[18px]']"
-    >
-      <div class="mb-[350px]">
-        <div
-          to="/"
-          class="text-[#8FA1B9] ml-2 pb-2 mt-4 font-medium cursor-pointer"
-          @click="
-            () => {
-              navigateTo('/');
-              toggleMenu;
-            }
-          "
-        >
-          <span :class="{ 'text-primary': route.path === '/' }" class=""
-            >Trang chủ</span
+    <client-only>
+      <Drawer
+        v-model:show="showDrawer"
+        placement="left"
+        :class-list="['w-[75%]', 'px-[18px]']"
+      >
+        <div class="mb-[350px]">
+          <div
+            to="/"
+            class="text-[#8FA1B9] ml-2 pb-2 mt-4 font-medium cursor-pointer"
+            @click="
+              () => {
+                navigateTo('/');
+                toggleMenu;
+              }
+            "
           >
-        </div>
+            <span :class="{ 'text-primary': route.path === '/' }" class=""
+              >Trang chủ</span
+            >
+          </div>
 
-        <UMenuMobile :items="visibleCategories" @item-click="toggleMenu" />
-      </div>
-    </Drawer>
+          <UMenuMobile :items="visibleCategories" @item-click="toggleMenu" />
+        </div>
+      </Drawer>
+    </client-only>
   </div>
 </template>
 

@@ -3,35 +3,6 @@ const { restAPI } = useApi();
 const config = useRuntimeConfig();
 const route = useRoute();
 
-const categorySegments = Array.isArray(route.params.categories)
-  ? route.params.categories
-  : [route.params.categories].filter(Boolean);
-const slug = categorySegments.at(-1) || "";
-
-const { data: resData } = await restAPI.articles.getArticleCategories({
-  params: {
-    page: 1,
-    limit: 100,
-  },
-});
-
-const categories = resData.value?.data?.categories || [];
-const flattenSlugs = (nodes) => {
-  const out = [];
-  const stack = Array.isArray(nodes) ? [...nodes] : [];
-  while (stack.length) {
-    const node = stack.shift();
-    if (!node) continue;
-    if (node.slug) out.push(node.slug);
-    if (Array.isArray(node.children) && node.children.length) {
-      stack.unshift(...node.children);
-    }
-  }
-  return out;
-};
-
-const knownSlugs = flattenSlugs(categories);
-
 const rawTagSlug = route?.params?.slug;
 const tagSlug = Array.isArray(rawTagSlug)
   ? rawTagSlug.at(-1)
@@ -47,9 +18,7 @@ const { data: resDataDetail } = await restAPI.articles.getArticlesByTag(
   },
 );
 
-const categoryDetail = computed(
-  () => resDataDetail.value?.data?.category || {},
-);
+const tagDetail = computed(() => resDataDetail.value?.data?.tag || {});
 const listArticles = computed(() => resDataDetail.value?.data?.articles || []);
 const pagination = computed(() => {
   return resDataDetail.value?.data?.pagination || {};
@@ -75,14 +44,14 @@ watchEffect(() => {
     return;
   }
 
-  const category = categoryDetail.value;
-  const meta = category?.metadata || {};
-  const title = meta.meta_title || category?.name || "";
-  const description = meta.meta_description || category?.description || "";
+  const tag = tagDetail.value;
+  const meta = tag?.metadata || {};
+  const title = meta.meta_title || tag?.name || "";
+  const description = meta.meta_description || tag?.description || "";
   const image =
     meta.meta_image?.[0]?.src ||
-    category?.thumb_image?.[0]?.src ||
-    category?.feature_image?.[0]?.src;
+    tag?.thumb_image?.[0]?.src ||
+    tag?.feature_image?.[0]?.src;
 
   useHead({
     title,
@@ -109,9 +78,9 @@ watchEffect(() => {
     <div v-else class="">
       <TagDetail
         class="width-base mt-[60px]"
-        :categories="dataTags"
+        :tags="dataTags"
         :list-articles="listArticles"
-        :category="categoryDetail"
+        :tag="tagDetail"
         :pagination="pagination"
       />
     </div>

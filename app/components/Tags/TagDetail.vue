@@ -1,7 +1,7 @@
 <script setup>
 const emit = defineEmits(["on-change-page", "on-change-page-size"]);
 const props = defineProps({
-  categories: {
+  tags: {
     type: Array,
     default: () => [],
   },
@@ -9,7 +9,7 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-  category: {
+  tag: {
     type: Object,
     default: () => ({}),
   },
@@ -19,8 +19,8 @@ const props = defineProps({
   },
 });
 
-const categories = computed(() =>
-  props.categories.slice().sort((a, b) => {
+const tags = computed(() =>
+  props.tags.slice().sort((a, b) => {
     const pa = a?.position_menu ?? a?.display_order ?? 0;
     const pb = b?.position_menu ?? b?.display_order ?? 0;
     if (pa !== pb) return pa - pb;
@@ -35,27 +35,13 @@ const totalItems = computed(
 
 const linksBreadcrumb = computed(() => {
   const links = [{ label: "Trang chủ", to: "/", disabled: false }];
-  const current = props.category || null;
-  if (!current || !current.id) return links;
+  const current = props.tag || null;
+  if (!current || !current.slug) return links;
 
-  const chain = [];
-  let node = current;
-  while (node) {
-    chain.push(node);
-    const parentId = node.parent_id;
-    if (!parentId) break;
-    node = props.categories.find((c) => c.id === parentId) || null;
-  }
-
-  chain.reverse();
-  let path = "";
-  chain.forEach((cat, idx) => {
-    path += `/${cat.slug}`;
-    links.push({
-      label: cat.name || cat.slug,
-      to: path,
-      disabled: idx === chain.length - 1,
-    });
+  links.push({
+    label: current.name || current.slug,
+    to: `/bai-viet/tag/${current.slug}`,
+    disabled: true,
   });
 
   return links;
@@ -108,7 +94,7 @@ const cardItems = computed(() => {
         article?.content?.cover_photo?.[0]?.alt ||
         article?.metadata?.meta_image?.[0]?.alt ||
         article.title,
-      category: article.category,
+      tag: article.tag,
       time: formatDate(article.published_at),
       tag: (() => {
         const t = article?.tag;
@@ -157,17 +143,17 @@ const handleChangePageSize = (size) => {
     <div class="xl:mt-[30px] mt-[45px]">
       <header class="mb-8">
         <h1 class="xl:text-[28px] text-2xl text-title font-semibold">
-          {{ category?.name }}
+          {{ tag?.name }}
         </h1>
-        <p v-if="category?.description" class="text-secondary mt-2">
-          {{ category.description }}
+        <p v-if="tag?.description" class="text-secondary mt-2">
+          {{ tag.description }}
         </p>
       </header>
       <div class="flex gap-6 justify-between">
         <div class="hidden xl:block w-1/4">
           <div class="bg-[#F2F2F2] p-5 rounded-2xl shadow-sm">
             <div
-              v-for="(menuItem, index) in categories"
+              v-for="(menuItem, index) in tags"
               :key="menuItem.id || index"
               class="py-2"
             >
