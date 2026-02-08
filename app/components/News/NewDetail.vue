@@ -52,6 +52,44 @@ function isImage(file) {
     return false;
   }
 }
+
+const iframeRefs = ref([]);
+
+import { onBeforeRouteLeave } from "vue-router";
+
+const cleanupIframes = () => {
+  try {
+    (iframeRefs.value || []).forEach((f) => {
+      if (!f) return;
+      try {
+        f.src = "about:blank";
+        f.removeAttribute && f.removeAttribute("src");
+        if (f.contentWindow) {
+          try {
+            f.contentWindow.document &&
+              f.contentWindow.document.open() &&
+              f.contentWindow.document.close();
+          } catch (e) {
+            // ignore
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
+    });
+  } catch (e) {
+    // ignore
+  }
+};
+
+onBeforeRouteLeave((to, from, next) => {
+  cleanupIframes();
+  next();
+});
+
+onBeforeUnmount(() => {
+  cleanupIframes();
+});
 </script>
 
 <template>
@@ -102,6 +140,7 @@ function isImage(file) {
             <iframe
               v-if="iframeSrc(file)"
               :src="iframeSrc(file)"
+              :ref="(el) => (iframeRefs[idx] = el)"
               style="border: 0"
               class="w-full lg:h-[600px] h-[400px]"
               frameborder="0"
@@ -127,7 +166,7 @@ function isImage(file) {
         v-for="tag in newDetail?.tags"
         :key="tag.slug"
         class="text-primary flex items-center cursor-pointer px-4 py-1 bg-[#DBEFDE] rounded-md"
-        @click="navigateTo(`/tin-tuc/tag/${tag?.slug}`)"
+        @click="navigateTo(`/bai-viet/tag/${tag?.slug}`)"
       >
         {{ tag?.name }}
       </div>

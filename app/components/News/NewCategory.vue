@@ -213,12 +213,12 @@ function formatDate(dateString) {
             :src="item?.content?.cover_photo?.[0]?.url || '/img/empty.jpg'"
             :alt="item?.content?.cover_photo?.[0]?.alt || 'No image'"
             class="max-w-[60px] max-h-[60px] aspect-[1.0] mr-2 rounded-lg cursor-pointer object-cover"
-            @click="navigateTo(`/articles/${item.slug}`)"
+            @click="navigateTo(`/bai-viet/${item.slug}`)"
           />
           <div class="text-base">
             <div
               class="leading-[1.35] line-clamp-3 cursor-pointer"
-              @click="navigateTo(`/articles/${item.slug}`)"
+              @click="navigateTo(`/bai-viet/${item.slug}`)"
             >
               {{ item.title }}
             </div>
@@ -258,7 +258,7 @@ function formatDate(dateString) {
             <SwiperSlide v-for="item in news" :key="item.id">
               <div
                 class="cursor-pointer"
-                @click="navigateTo(`/tin-tuc/${item.slug}`)"
+                @click="navigateTo(`/bai-viet/${item.slug}`)"
               >
                 <div class="relative rounded-xl">
                   <img
@@ -293,8 +293,8 @@ function formatDate(dateString) {
         <div class="flex flex-wrap gap-2">
           <div v-for="item in tags" :key="item.id">
             <button
-              class="px-3 py-2 bg-[#DBC0AB] text-secondary rounded-full flex"
-              @click="navigateTo(`/tin-tuc/tag/${item.slug}`)"
+              class="px-3 py-2 bg-[#DBC0AB] text-secondary rounded-full flex cursor-pointer"
+              @click="navigateTo(`/bai-viet/tag/${item.slug}`)"
             >
               {{ item.name }}
             </button>

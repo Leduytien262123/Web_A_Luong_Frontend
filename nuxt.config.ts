@@ -30,11 +30,16 @@ export default defineNuxtConfig({
     "nuxt-swiper",
     "@vueuse/motion/nuxt",
     "@nuxt/icon",
+    "@nuxtjs/sitemap",
   ],
 
   runtimeConfig: {
     public: {
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL || "http://localhost:4848",
+      site: {
+        url: "https://quantriduanxaydung.vn",
+        name: "Quản Trị Rủi Ro Dự Án Đầu Tư Xây Dựng",
+      },
     },
   },
 
@@ -61,5 +66,21 @@ export default defineNuxtConfig({
     },
   },
 
+  // sitemap: {
+  //   sources: [
+  //     "http://localhost:4848/api/__sitemap__/tags/urls",
+  //     "http://localhost:4848/api/__sitemap__/categories/urls",
+  //     "http://localhost:4848/api/__sitemap__/articles/urls",
+  //   ],
+  // },
+  sitemap: {
+    hostname: "https://quantriduanxaydung.vn",
+    sources: [
+      "https://api.quantriduanxaydung.vn/api/__sitemap__/tags/urls",
+      "https://api.quantriduanxaydung.vn/api/__sitemap__/categories/urls",
+      "https://api.quantriduanxaydung.vn/api/__sitemap__/articles/urls",
+    ],
+  },
+
   css: ["~/assets/css/main.css", "swiper/css", "swiper/css/pagination"],
-});
+} as any);

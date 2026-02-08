@@ -40,7 +40,7 @@ const items = computed(() => {
         </div>
         <h3
           class="mt-3 text-lg font-semibold leading-6 text-[#111] line-clamp-2 cursor-pointer"
-          @click="navigateTo(`/articles/${item.slug}`)"
+          @click="navigateTo(`/bai-viet/${item.slug}`)"
         >
           {{ item.title }}
         </h3>

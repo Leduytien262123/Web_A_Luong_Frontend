@@ -114,6 +114,13 @@
 </template>
 
 <script setup>
+const props = defineProps({
+  categories: {
+    type: Array,
+    default: () => [],
+  },
+});
+
 const aboutUs = ref([]);
 const width = ref(0);
 const updateWidth = () => {

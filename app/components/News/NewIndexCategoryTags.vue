@@ -116,7 +116,7 @@ function formatDate(dateString) {
       <div v-for="item in displayedNews" :key="item.id" class="">
         <div
           class="cursor-pointer"
-          @click="navigateTo(`/tin-tuc/${item.slug}`)"
+          @click="navigateTo(`/bai-viet/${item.slug}`)"
         >
           <div class="relative rounded-xl">
             <img

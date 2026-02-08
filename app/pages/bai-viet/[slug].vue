@@ -202,7 +202,6 @@ const linksBreadcrumb = computed(() => {
           :tags="tags"
         />
       </div>
-      <NewTrend class="width-base lg:mt-[100px] mt-20" />
       <NewCategory
         class="width-base lg:hidden mt-20"
         :categories-raw="categoriesRaw"

@@ -41,7 +41,7 @@ const searchGroups = computed(() => [
       ? `Kết quả tìm kiếm "${searchTerm.value}"`
       : "Bài viết",
     items: (apiArticles?.value || []).map((a) => {
-      const to = `/articles/${a.slug}`;
+      const to = `/bai-viet/${a.slug}`;
       return {
         id: a.id,
         label: a.title || a.label,

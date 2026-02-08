@@ -75,7 +75,7 @@ class CMSManager {
     return this.request.get(`${API_ENDPOINTS.articles}/categories/${slug}`);
   }
 
-  async getArticleTagsarticles(slug, data) {
+  async getArticlesByTag(slug, data) {
     return this.request.get(`${API_ENDPOINTS.articles}/tags/${slug}`, data);
   }
 
