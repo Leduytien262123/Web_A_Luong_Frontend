@@ -35,7 +35,12 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      baseUrl: process.env.NUXT_PUBLIC_BASE_URL || "http://localhost:4848",
+      baseUrl:
+        process.env.NUXT_PUBLIC_BASE_URL || "https://api.quantriduanxaydung.vn",
+      domainUrl:
+        process.env.NUXT_PUBLIC_DOMAIN_URL ||
+        process.env.NUXT_PUBLIC_BASE_URL ||
+        "https://api.quantriduanxaydung.vn",
       site: {
         url: "https://quantriduanxaydung.vn",
         name: "Quản Trị Rủi Ro Dự Án Đầu Tư Xây Dựng",

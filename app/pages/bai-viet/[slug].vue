@@ -130,9 +130,7 @@ if (isObjectNullOrEmpty(newDetail?.data)) {
 
   useSeoMeta({
     title: newDetail?.data?.metadata?.meta_title || newDetail?.data?.name,
-    description:
-      newDetail?.data?.metadata?.meta_description ||
-      newDetail?.data?.description,
+    description: newDetail?.data?.metadata?.meta_description,
     keywords: newDetail?.data?.metadata?.meta_keywords,
     ogUrl: config.public.domainUrl + route.path,
     ogTitle: newDetail?.data?.metadata?.meta_title || newDetail?.data?.name,
@@ -142,7 +140,7 @@ if (isObjectNullOrEmpty(newDetail?.data)) {
     ogLocale: "vi_VN",
     ogType: "website",
     ogImage:
-      newDetail?.data?.metadata?.meta_images?.[0]?.src ||
+      newDetail?.data?.metadata?.meta_image?.[0]?.src ||
       newDetail?.data?.thumb_image?.[0]?.src ||
       newDetail?.data?.feature_image?.[0]?.src,
   });
