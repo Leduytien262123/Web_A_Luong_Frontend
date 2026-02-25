@@ -10,12 +10,12 @@
         {{ dataContent.description }}
       </p>
     </div>
-    <div class="grid grid-cols-12 gap-5">
+    <div class="grid grid-cols-9 gap-5">
       <div
         v-for="(item, index) in dataContent?.metadata || []"
         :key="item.title"
         v-motion
-        class="col-span-12 md:col-span-6 lg:col-span-3 trait-item mb-4 text-center"
+        class="col-span-9 md:col-span-6 lg:col-span-3 trait-item mb-4 text-center"
         :initial="{ opacity: 0, y: 20 }"
         :enter="{
           opacity: 1,
